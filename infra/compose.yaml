@@ -1,0 +1,24 @@
+services:
+  mail:
+    image: stalwartlabs/stalwart:${STALWART_TAG:-v1}
+    init: true
+    restart: unless-stopped
+    ports:
+      - "25:25"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "4190:4190"
+      - "443:443"
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - mail-config:/etc/stalwart
+      - mail-data:/var/lib/stalwart
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+volumes:
+  mail-config:
+  mail-data:

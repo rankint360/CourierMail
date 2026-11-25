@@ -101,3 +101,30 @@ This register reconstructs the initial implementation from the work recorded in 
 - [Fastmail developer documentation](https://www.fastmail.com/dev/)
 - [Fastmail API token instructions](https://www.fastmail.help/hc/en-us/articles/5254602856719-API-tokens)
 - [JMAP mail specification](https://jmap.io/spec/rfc8621/)
+
+## Platform expansion, November 24–25, 2026
+
+| Record | Step | Result or evidence |
+| --- | --- | --- |
+| R053 | Received the request to expand all three product areas. | Business service, webmail, hosting infrastructure, and desktop/mobile access. |
+| R054 | Inspected the implementation and reopened the private Site source. | Preserved Site identity and project history. |
+| R055 | Confirmed infrastructure preferences with the user. | User has Render, no Linux server, and will select the domain after the build. |
+| R056 | Reviewed current Render and Stalwart documentation. | Application runs over HTTP on Render. SMTP/IMAP need a separate host. Selected Stalwart v1 management and JMAP. |
+| R057 | Added the persistent business backend. | SQLite organizations, users, domains, mailboxes, sessions, invitations, audit history, rate counters, and provisioning leases. |
+| R058 | Implemented authentication and authorization. | Scrypt hashes, protected sessions, tenant ownership, owner/admin/member roles, same-origin writes, password changes, and session revocation. |
+| R059 | Implemented domain onboarding. | Unique domains, DNS ownership verification, MX/SPF/DMARC checks, activation, and generated DNS-zone display. |
+| R060 | Implemented mailbox administration. | Assignment, provisioning, aliases, quotas, suspension, encrypted mailbox sessions, and recoverable provider operations. |
+| R061 | Built the business admin interface. | Overview, Domains, Mailboxes, Team, Branding, Security, Apps, and Operations. Invitations generate expiring links for the user to share. |
+| R062 | Extended webmail to use self-hosted per-user JMAP credentials. | Preserved Fastmail compatibility and scoped browser databases by authenticated user. |
+| R063 | Added the installable web app. | Manifest, PNG/SVG icons, shell-only service worker caching, install controls, and iOS guidance. |
+| R064 | Added infrastructure and operational files. | Render Blueprint, Dockerfile, Stalwart Compose, backup scripts, password recovery, and deployment documentation. |
+| R065 | Added business and production HTTP regression tests. | Covers tenant boundaries, verification gates, sessions, invitations, encryption, provisioning methods, provider object encoding, app routes, and PWA assets. |
+| R066 | Ran the expanded suite. | All 20 tests passed, including the production HTTP entrypoint. Build and JavaScript syntax checks succeeded. |
+| R067 | Corrected Stalwart payload encoding. | Credentials and aliases use keyed objects, matching Stalwart v1 documentation. Provider query recovery checks exact account/domain identities. |
+| R068 | Attempted expanded browser QA. | Initial browser connection timed out. Reset the browser connection and restarted the local preview successfully on November 25. |
+| R069 | Verified admin flows in the browser using a synthetic local account. | Registration, domain reservation, DNS setup display, branding, Apps screen, branded webmail, and mobile width checks succeeded. |
+| R070 | Checked Docker availability. | Docker is unavailable. Mail container startup, delivery, and volume restoration remain unverified. |
+| R071 | Discovered and suggested the Render integration. | User installed it. Render access was verified with a read-only workspace query. |
+| R072 | Requested Render workspace confirmation. | User confirmed Rankint360. Listed existing services and selected Ohio to match their region. |
+| R073 | Reviewed current Render Blueprint, disk, and compute-plan references. | Prepared one application service and a 1 GB persistent disk. No existing services are being adopted. Applying a reviewed plan requires user approval. |
+| R074 | Updated readiness and deployment documentation. | Records business backend, separate mail host, installable PWA, paid disk choice, verification, and remaining live setup. |

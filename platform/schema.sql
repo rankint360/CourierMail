@@ -1,0 +1,14 @@
+PRAGMA foreign_keys = ON;
+CREATE TABLE IF NOT EXISTS organizations (id TEXT PRIMARY KEY, name TEXT NOT NULL, brand TEXT NOT NULL DEFAULT 'Courier Mail', color TEXT NOT NULL DEFAULT '#174e40', plan TEXT NOT NULL DEFAULT 'starter', created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id), email TEXT NOT NULL UNIQUE, name TEXT NOT NULL, password_hash TEXT NOT NULL, role TEXT NOT NULL CHECK(role IN ('owner','admin','member')), active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sessions (hash TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id), expires INTEGER NOT NULL, mail_auth TEXT, mailbox_id TEXT);
+CREATE TABLE IF NOT EXISTS domains (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id), name TEXT NOT NULL UNIQUE, token TEXT NOT NULL, verified_at TEXT, provider_id TEXT, status TEXT NOT NULL DEFAULT 'pending', dns_json TEXT NOT NULL DEFAULT '{}', error TEXT, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS mailboxes (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id), domain_id TEXT NOT NULL REFERENCES domains(id), user_id TEXT REFERENCES users(id), email TEXT NOT NULL UNIQUE, display_name TEXT NOT NULL, quota_bytes INTEGER NOT NULL, provider_id TEXT, status TEXT NOT NULL DEFAULT 'pending', aliases_json TEXT NOT NULL DEFAULT '[]', error TEXT, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS audit (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id), user_id TEXT, action TEXT NOT NULL, resource TEXT, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS rate_limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS invitations (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id), email TEXT NOT NULL, role TEXT NOT NULL CHECK(role IN ('admin','member')), token_hash TEXT NOT NULL UNIQUE, expires INTEGER NOT NULL, used_at TEXT, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS leases (resource TEXT PRIMARY KEY, expires INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS audit_org ON audit(org_id, created_at);
+CREATE INDEX IF NOT EXISTS mailboxes_org ON mailboxes(org_id);
+CREATE INDEX IF NOT EXISTS domains_org ON domains(org_id);
+CREATE INDEX IF NOT EXISTS sessions_user ON sessions(user_id);

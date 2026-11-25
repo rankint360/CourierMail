@@ -1,0 +1,11 @@
+import { backup, DatabaseSync } from 'node:sqlite';
+import { mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
+const dataDir = resolve(process.env.DATA_DIR || '.data');
+const destination = resolve(process.argv[2] || 'backups');
+await mkdir(destination, { recursive: true });
+const db = new DatabaseSync(resolve(dataDir, 'courier.sqlite'), { readOnly: true });
+const file = resolve(destination, `courier-${new Date().toISOString().replace(/[:.]/g, '-')}.sqlite`);
+await backup(db, file);
+db.close();
+console.log(`Application backup written to ${file}. Keep APP_SECRET in your secret manager to recover encrypted sessions.`);

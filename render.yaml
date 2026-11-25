@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: courier-mail
+    runtime: docker
+    plan: starter
+    region: ohio
+    healthCheckPath: /healthz
+    disk:
+      name: courier-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data/courier
+      - key: APP_SECRET
+        generateValue: true
+      - key: ALLOW_REGISTRATION
+        value: "true"
+      - key: MAX_MAILBOXES_PER_ORG
+        value: "25"

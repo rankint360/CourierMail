@@ -1,0 +1,12 @@
+import { createStore } from '../platform/store.mjs';
+import { hashPassword } from '../platform/security.mjs';
+import { resolve } from 'node:path';
+const email = process.argv[2]?.trim().toLowerCase();
+if (!email || !process.env.NEW_PASSWORD) throw new Error('Provide an account email and set NEW_PASSWORD in the environment.');
+const store = createStore(resolve(process.env.DATA_DIR || '.data', 'courier.sqlite'));
+const user = store.one('SELECT id FROM users WHERE email=?', email);
+if (!user) throw new Error('Account not found.');
+const password = await hashPassword(process.env.NEW_PASSWORD);
+store.transaction(() => { store.run('UPDATE users SET password_hash=? WHERE id=?', password, user.id); store.run('DELETE FROM sessions WHERE user_id=?', user.id); });
+store.close();
+console.log('Password changed and all account sessions revoked.');

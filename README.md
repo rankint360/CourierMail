@@ -1,6 +1,6 @@
 # Courier Mail
 
-A responsive webmail app with a Fastmail JMAP backend and a device-local demo mailbox. Requires Node.js 22 or later. It has no npm dependencies.
+A business email platform with organization administration, domain verification, mailbox provisioning, webmail, and installable desktop/mobile web apps. Stalwart v1 supplies the mail engine. The original Fastmail connection remains available for standalone webmail. Requires Node.js 24 or later and has no npm dependencies.
 
 ## Run locally
 
@@ -8,17 +8,29 @@ A responsive webmail app with a Fastmail JMAP backend and a device-local demo ma
 npm start
 ```
 
-Open http://127.0.0.1:4173. The local server binds to the loopback interface. Demo messages, attachments, settings, and recovery drafts are retained in IndexedDB in this browser. Demo sending adds a message to the demo Sent folder.
+Open http://127.0.0.1:4173 for webmail and http://127.0.0.1:4173/admin for business administration. Local development stores the business database in ignored `.data/` and creates a local encryption key. The local server binds to loopback. Demo messages, attachments, settings, and recovery drafts are retained in IndexedDB. Demo sending adds a message to the demo Sent folder.
+
+## Business email hosting
+
+The Render Blueprint deploys the business application with a persistent disk. The `infra/compose.yaml` stack prepares Stalwart on a mail-capable Linux host. Render handles the application over HTTP, while Stalwart handles SMTP, IMAP, JMAP, storage, spam filtering, and delivery queues.
+
+Business Admin includes account registration and sign-in, tenant ownership, owner/admin/member roles, one-time invitations, custom branding, unique domain registration, DNS ownership checks, domain activation, mailbox provisioning, aliases, quotas, suspension, audit history, password changes, and encrypted mailbox sessions.
+
+See [deployment instructions](docs/DEPLOYMENT.md) for the Render Blueprint, server setup, DNS, DKIM, credentials, backups, recovery, and launch verification. The Blueprint selects a paid Render instance and persistent disk. Review its cost before provisioning.
+
+## Desktop and mobile
+
+Courier is a progressive web app. Install it from a supported desktop/Android browser, or use Safari's Add to Home Screen on iOS. The service worker caches the application shell and excludes mail API responses. Browser-local draft recovery is available. Native app-store packages and signed installers are not included.
 
 ## Connect real email
 
 Create a Fastmail JMAP API token with **Email** and **Email submission** scopes. Fastmail Basic plans do not support API tokens. See https://www.fastmail.help/hc/en-us/articles/5254602856719-API-tokens.
 
-For local use, set `FASTMAIL_API_TOKEN` in the process environment, then run `npm start`. `.env.example` documents the variables. The application does not automatically load `.env` files. Node's built-in `--env-file` can load a local ignored file, for example `node --env-file=.env local.mjs`.
+For standalone local webmail, set `FASTMAIL_API_TOKEN` in the process environment, then run `npm run start:webmail`. `.env.example` documents the variables. The application does not automatically load `.env` files. Node's built-in `--env-file` can load a local ignored file, for example `node --env-file=.env local.mjs`. The production business server uses each signed-in user's mailbox connection.
 
 For the hosted private Site, set `FASTMAIL_API_TOKEN` as a secret using Sites runtime environment settings, then redeploy. In Courier, open Settings and select **Open live Fastmail mailbox**. The token stays server-side.
 
-Keep the hosted Site owner-private. This version serves a single Fastmail account. Each deployment should have its own account token. Optional `OWNER_ID` restricts mailbox operations to one Sites authenticated user ID. Public signup, a tenant administration system, billing, and domain provisioning require a separate product layer.
+Keep the standalone Sites preview owner-private when it contains a Fastmail token. This compatibility mode serves a single Fastmail account and supports optional `OWNER_ID`. Business organizations and persistent administration run on the Render/Node server using Courier sessions and a separate mail engine.
 
 ## Included workflows
 
@@ -42,4 +54,8 @@ npm run build
 
 The build embeds the web assets into `dist/server/index.js`, a Cloudflare Worker module. `.openai/hosting.json` identifies the private Sites project. Native Sites publication packages this Worker and the manifest.
 
-Backend tests simulate JMAP responses. Real delivery, DNS configuration, provider limits, and provider behavior require validation with the connected Fastmail account. A token has not been configured in the delivered deployment.
+The test suite covers webmail regression cases, tenant boundaries, sessions, DNS activation gates, provisioning, invitations, encryption, provider payloads, and the production HTTP entrypoint. Provider calls are simulated. Real delivery, DNS, spam handling, Docker startup, backup restore, and Stalwart behavior require validation on the connected infrastructure.
+
+The existing private Site previews the webmail and serves the business portal's deployment guidance. Persistent business APIs require the Render/Node deployment. No Render service, live mail host, final domain, or provider credentials have been configured in this session.
+
+See [STATUS.md](STATUS.md) for the current readiness snapshot and [RECORD_REGISTER.md](RECORD_REGISTER.md) for the work history.

@@ -37,10 +37,13 @@ const templates = [
   { name: 'Friendly follow-up', text: 'I wanted to follow up on my previous email. Have you had a chance to review it?\n\nLet me know if there’s anything I can help clarify. Thank you!' },
 ];
 let db;
+let mailboxDatabase = 'courier-mail-v1';
+let businessContext = null;
+let providerName = 'Fastmail';
 const state = { mode: 'demo', configured: false, folder: 'inbox', search: '', selected: null, checked: new Set(), messages: [], boxes: [], identities: [], total: 0, loading: false, error: '', listVersion: 0, detailVersion: 0, profile: { name: 'Alex Morgan', email: 'alex@northline.studio', signature: 'Alex Morgan\nNorthline Studio' }, demoMessages: [], demoBoxes: [], drafts: {}, composer: null, online: navigator.onLine };
 async function openDB() {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open('courier-mail-v1', 1);
+    const req = indexedDB.open(mailboxDatabase, 1);
     req.onupgradeneeded = () => req.result.createObjectStore('data');
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
@@ -114,6 +117,22 @@ function renderShell() {
   $('#app').innerHTML = `<div class="shell"><button class="mobile-overlay" data-action="menu" aria-label="Close navigation"></button><aside class="sidebar"><div class="brand"><span class="brandmark">${icon('mail')}</span>courier<span class="small">mail</span></div><button class="compose-button" data-action="compose">${icon('plus')}Compose</button><nav class="nav-group" aria-label="Mail folders">${nav}</nav><div><div class="section-label">My folders${button('new-folder', 'plus', 'Create folder')}</div><nav class="nav-group" aria-label="Custom folders">${state.boxes.filter(x => !x.role).map(x => `<button class="nav-button ${state.folder === x.id ? 'active' : ''}" data-action="folder" data-id="${escapeHTML(x.id)}"><span class="folder-dot"></span>${escapeHTML(x.name)}</button>`).join('')}</nav></div><div class="sidebar-bottom"><div class="storage">${state.mode === 'demo' ? 'Your space to make things happen.<br>Demo mailbox · saved on this device' : 'Connected to Fastmail<br>Your mail stays in your account'}</div><button class="nav-button" data-action="settings">${icon('settings')}Settings</button></div></aside><main class="workspace"><header class="topbar">${button('menu', 'menu', 'Open navigation', 'class="mobile-menu"')}<form class="search" id="search-form" role="search">${icon('search')}<input id="search" type="search" placeholder="Search your mail" aria-label="Search mail" value="${escapeHTML(state.search)}"><span class="shortcut">Ctrl K</span></form><div class="top-actions">${button('refresh', 'refresh', 'Refresh mailbox')}<button class="account" data-action="settings" aria-label="Account settings"><span class="account-text"><strong>${escapeHTML(state.profile.name)}</strong>${state.mode === 'demo' ? 'Northline Studio' : 'Fastmail'}</span><span class="avatar">${initials(state.profile.name)}</span></button></div></header><div class="page-title"><div><h1>${escapeHTML(folderLabel())}</h1><div class="subtitle" id="list-subtitle">${state.loading ? 'Loading your messages…' : 'A little clarity for your day.'}</div></div><button class="mode-tag" data-action="settings">${icon(state.mode === 'demo' ? 'folder' : 'check')}${state.mode === 'demo' ? 'Demo mailbox' : 'Fastmail connected'}</button></div><div id="error" class="error-banner ${state.error ? '' : 'hidden'}" role="alert">${escapeHTML(state.error)}</div><div class="mail-layout ${state.selected ? 'has-message' : ''}"><section class="list-panel" aria-label="Messages"><div class="list-toolbar"><input class="check" type="checkbox" id="select-all" aria-label="Select all displayed messages">${button('bulk-read', 'mail', 'Mark selected as read')}${button('bulk-archive', 'archive', 'Archive selected')}${button('bulk-trash', 'trash', 'Move selected to trash')}<span class="spacer"></span><span class="small" id="checked-count"></span></div><div class="message-list" id="message-list"></div><div class="list-footer"><span id="list-count"></span><span>${state.mode === 'demo' ? 'On this device' : 'Synced with Fastmail'}</span></div></section><section class="reading-pane" aria-label="Message reader" id="reader"></section></div></main></div>`;
   // The mobile menu shares the standard icon button component.
   $('.topbar > .icon-button').classList.add('mobile-menu');
+  const adminLink = document.createElement('a');
+  adminLink.href = '/admin'; adminLink.className = 'nav-button'; adminLink.textContent = 'Business Admin';
+  $('.sidebar-bottom').append(adminLink);
+  if (businessContext) {
+    document.documentElement.style.setProperty('--green', businessContext.color);
+    const brand = $('.brand');
+    brand.replaceChildren();
+    const mark = document.createElement('span'); mark.className = 'brandmark'; mark.innerHTML = icon('mail');
+    brand.append(mark, document.createTextNode(businessContext.brand));
+  }
+  if (providerName === 'Courier Mail' && state.mode === 'live') {
+    $('.storage').textContent = 'Connected to Courier Mail';
+    $('.mode-tag').textContent = 'Mailbox connected';
+    const accountText = $('.account-text');
+    if (accountText) accountText.lastChild.textContent = 'Courier Mail';
+  }
   renderList(); renderReader();
 }
 function renderList() {
@@ -343,6 +362,11 @@ function confirmAction(title, message, label = 'Confirm') {
   });
 }
 function openSettings(tab = 'account') {
+  if (providerName === 'Courier Mail' && tab === 'account') {
+    $('#settings').innerHTML = `<div class="modal-head"><h2>Mailbox settings</h2>${button('close-settings', 'x', 'Close settings')}</div><div class="settings-content"><div class="connection-note"><strong>${escapeHTML(state.profile.email)}</strong>Connected to your organization’s mail service.</div><form id="settings-form"><label for="signature">Email signature</label><textarea id="signature" name="signature">${escapeHTML(state.profile.signature)}</textarea><div class="settings-footer"><button class="primary" type="submit">Save settings</button></div></form><p><button class="outline-button" data-action="settings-tab" data-tab="drafts">Recovered drafts</button></p><p><a href="/admin">Manage your business account and devices</a></p></div>`;
+    if (!$('#settings').open) $('#settings').showModal();
+    return;
+  }
   $('#settings').innerHTML = `<div class="modal-head"><h2>Make yourself at home</h2>${button('close-settings', 'x', 'Close settings')}</div><div class="settings-content"><div class="settings-tabs"><button data-action="settings-tab" data-tab="account" class="${tab === 'account' ? 'active' : ''}">Account</button><button data-action="settings-tab" data-tab="drafts" class="${tab === 'drafts' ? 'active' : ''}">Recovered drafts</button></div>${tab === 'drafts' ? `<p>Drafts saved on this device. Live drafts also sync to Fastmail when you close the composer.</p>${Object.values(state.drafts).filter(x => x.mode === state.mode).map(x => `<button class="attachment" data-action="recover-draft" data-id="${x.localId}">${icon('draft')}<span><span class="file-name">${escapeHTML(x.subject || '(No subject)')}</span><span class="file-size">${escapeHTML(x.to || 'No recipient')} · ${x.savedAt ? dateShort(x.savedAt) : 'Unsaved'}</span></span></button>`).join('') || '<p>No recovered drafts.</p>'}` : `<div class="connection-note"><strong>${state.mode === 'demo' ? 'You’re exploring the demo mailbox' : 'Fastmail is connected'}</strong>${state.mode === 'demo' ? 'Demo messages stay in this browser. Sending adds them to the demo Sent folder.' : 'Reading, drafts, folders, attachments, and sending use your Fastmail account.'}</div><form id="settings-form"><label for="profile-name">Display name</label><input id="profile-name" name="name" value="${escapeHTML(state.profile.name)}" ${state.mode === 'live' ? 'readonly' : ''}><label for="profile-email">Email address</label><input id="profile-email" name="email" type="email" required value="${escapeHTML(state.profile.email)}" ${state.mode === 'live' ? 'readonly' : ''}><label for="signature">Email signature</label><textarea id="signature" name="signature">${escapeHTML(state.profile.signature)}</textarea><div class="settings-footer"><button type="submit" class="primary">Save settings</button></div></form><hr><h3>Mailbox connection</h3>${state.configured ? `<p>A Fastmail token is configured on the server.</p><button class="outline-button" data-action="switch-mode">${state.mode === 'live' ? 'Explore demo mailbox' : 'Open live Fastmail mailbox'}</button>` : `<p>To connect real mail, add <code>FASTMAIL_API_TOKEN</code> as a server secret and redeploy. Grant the token Email and Email submission permissions. Tokens require an eligible Fastmail plan.</p><p><a href="https://www.fastmail.help/hc/en-us/articles/5254602856719-API-tokens" target="_blank" rel="noopener noreferrer">Fastmail connection instructions</a></p>`}<p class="small">Courier currently supports one account per private deployment. Keep this site private when a mailbox token is connected.</p><div class="settings-footer"><button class="outline-button" data-action="reset-demo">Reset demo mailbox</button></div>`}</div>`;
   if (!$('#settings').open) $('#settings').showModal();
 }
@@ -410,7 +434,7 @@ document.addEventListener('submit', async event => {
   try {
     if (event.target.id === 'search-form') { state.search = $('#search').value.trim(); state.selected = null; ++state.detailVersion; await loadMailbox(); renderReader(); }
     if (event.target.id === 'compose-form') await sendMessage();
-    if (event.target.id === 'settings-form') { const data = new FormData(event.target); state.profile.signature = String(data.get('signature')); if (state.mode === 'demo') { state.profile.name = String(data.get('name')); state.profile.email = String(data.get('email')); } await persist(); $('#settings').close(); renderShell(); toast('Settings saved.'); }
+    if (event.target.id === 'settings-form') { const data = new FormData(event.target); state.profile.signature = String(data.get('signature')); if (state.mode === 'demo' && data.has('name') && data.has('email')) { state.profile.name = String(data.get('name')); state.profile.email = String(data.get('email')); } await persist(); $('#settings').close(); renderShell(); toast('Settings saved.'); }
     if (event.target.id === 'folder-form') {
       const name = $('#folder-name').value.trim(); if (!name) return;
       if (state.boxes.some(x => x.name.toLowerCase() === name.toLowerCase())) throw new Error('A folder with that name already exists.');
@@ -444,13 +468,28 @@ window.addEventListener('offline', () => { state.online = false; toast('You’re
 window.addEventListener('online', () => { state.online = true; toast('You’re back online.'); });
 async function init() {
   try {
+    const session = await request('platform/session');
+    if (session.user) {
+      mailboxDatabase = `courier-mail-v2-${session.user.id}`;
+      const overview = await request('platform/overview');
+      businessContext = overview.organization;
+    }
+  } catch { /* Standalone webmail remains available without the business backend. */ }
+  try {
     db = await openDB();
     const saved = await diskRead('mailbox');
     if (saved) { state.profile = saved.profile; state.demoMessages = saved.messages; state.demoBoxes = saved.boxes; state.drafts = saved.drafts || {}; } else { seed(); await persist(); }
   } catch { seed(); state.error = 'Browser storage is unavailable. Enable site storage to retain demo messages and drafts.'; }
-  try { const config = await request('config'); state.configured = config.configured; } catch { /* Demo remains usable when the server is offline. */ }
-  state.boxes = state.demoBoxes; renderShell(); await loadMailbox({ selectFirst: window.matchMedia('(min-width:851px)').matches });
+  try { const config = await request('config'); state.configured = config.configured; providerName = config.provider; if (config.configured && (config.provider === 'Courier Mail' || new URL(location.href).searchParams.get('live') === '1')) state.mode = 'live'; } catch { /* Demo remains usable when the server is offline. */ }
+  state.boxes = state.demoBoxes;
+  if (state.mode === 'live') {
+    try { await refreshCounts(); state.folder = roleId('inbox'); }
+    catch (failure) { state.mode = 'demo'; state.error = failure.message; state.boxes = state.demoBoxes; }
+  }
+  renderShell(); await loadMailbox({ selectFirst: window.matchMedia('(min-width:851px)').matches });
   const recovered = Object.values(state.drafts).filter(x => x.mode === state.mode);
   if (recovered.length) toast(`${recovered.length} saved draft${recovered.length === 1 ? '' : 's'} available in Settings → Recovered drafts.`);
 }
 init();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+window.addEventListener('focus', () => { if (state.mode === 'live' && !state.composer && !state.loading) loadMailbox().catch(() => {}); });

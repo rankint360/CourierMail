@@ -1,0 +1,8 @@
+.git
+.data
+.env
+dist
+backups
+infra/.env
+*.zip
+*.tar.gz

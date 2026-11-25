@@ -1,53 +1,58 @@
 # Courier Mail Status
 
-Updated November 24, 2026, America/Los_Angeles.
+Updated November 25, 2026, America/Los_Angeles.
 
-The webmail app is implemented and privately deployed. Demo mode is usable. A Fastmail account connection and real email verification are pending.
+Version 2 expands the webmail app into a deployable business email platform. The application and API tests pass locally. Live email hosting still requires a mail-capable host, a selected domain, DNS, TLS, and mail-server credentials.
 
-| Area | State | Evidence |
+## Readiness
+
+| Area | State | Evidence or dependency |
 | --- | --- | --- |
-| Webmail interface | Implemented | Inbox, folders, search, message reader, bulk actions, compose, replies, forwarding, Cc/Bcc, templates, and signature settings. |
-| Demo persistence | Implemented and browser checked | Draft survived refresh and reopened with its original contents. Demo sending and Sent search were checked. |
-| Folders and bulk actions | Browser checked in demo mode | Custom folder creation and bulk archive succeeded. |
-| Responsive UI | Desktop and narrow layouts inspected | Overflow and mobile toolbar corrections applied. |
-| Fastmail JMAP backend | Implemented with mocked test coverage | Mailboxes, message retrieval, search, changes, drafts, submissions, attachments, and folders. |
-| Backend regression tests | Passed | Nine tests passed during the GitHub handoff verification. |
-| JavaScript syntax | Passed | `web/app.js` and `server/worker.js`. |
-| Worker build | Passed | `npm run build` produces `dist/server/index.js`. |
-| Private Sites deployment | Succeeded | Source commit `277edd1d5655a85a64bfc4f0b2a855e266d80f24`. |
-| Fastmail credentials | Pending | `FASTMAIL_API_TOKEN` has not been configured. |
-| Real email delivery and provider behavior | Pending | Requires the connected Fastmail account. |
-| GitHub handoff | Published and verified | All 14 project source, configuration, test, and documentation files uploaded to `main`. Remote recursive tree confirmed the complete inventory at source commit `3e46a3269727d38f8c9a5779ee8d7de3a93978e0`. |
+| Business platform | Implemented and tested locally | Persistent organizations, accounts, roles, invitations, branding, domains, mailboxes, audit history, sessions, and password management. |
+| Tenant boundaries | Tested | Cross-organization mutations and member administration rejected. Mailbox sessions are limited to assigned active users. |
+| Domain onboarding | Implemented | DNS ownership verification gates provisioning. Includes MX/SPF/DMARC checks and generated DKIM zone display. |
+| Mailbox administration | Implemented | Reservation, activation, assignment, aliases, quotas, suspension, encrypted sign-in, and provisioning recovery. |
+| Webmail | Implemented | Inbox, folders, search, bulk actions, compose, replies, forwarding, Cc/Bcc, attachments, templates, and recovery drafts. |
+| Desktop/mobile access | Installable PWA implemented | Manifest, icons, service worker shell cache, and installation controls. Mail APIs are excluded from caching. |
+| Stalwart adapter | Mocked tests passed | Targets v1 management API and standard JMAP mail. Real server acceptance testing remains pending. |
+| Test suite | Passed | 20 tests, including the production Node HTTP entrypoint with an isolated database. |
+| Build and syntax | Passed | Worker build and modified JavaScript entrypoints checked. |
+| Admin browser QA | Passed for checked flows | Registration, domain reservation, DNS instructions, branding, Apps screen, and branded webmail. Mobile document width matches viewport. |
+| Docker and mail-stack QA | Pending | Docker is unavailable in the execution environment. |
+| Render account | Connected | User confirmed the Rankint360 workspace for deployment preparation. |
+| Render application | Deployment preparation | Blueprint includes a paid Starter service, Ohio region, and a 1 GB persistent disk. A reviewed plan must be approved before resources are created. |
+| SMTP/IMAP host | Pending | A separate mail-capable host is required. Render public web services expose HTTP. |
+| Domain and DNS | Pending | User will select the domain after the build. |
+| Live mail | Pending | Mail host, credentials, DNS, TLS, and external send/receive verification required. |
+| GitHub expansion update | In progress | Source and records are being published to the existing main branch. |
 
-## Locations
+## Deliverables
 
-- Repository target is [rankint360/CourierMail](https://github.com/rankint360/CourierMail).
-- Private app is [Courier Mail](https://courier-webmail-jv.stonybrioche1.chatgpt.site).
-- Hosting project is `appgprj_6b067b0c6e908191b4176e4b4a8da6bd`.
-- Successful deployment is `appgdep_6b067e8f559c81918c97dbbcd271bdd5`.
+- [Source repository](https://github.com/rankint360/CourierMail)
+- [Private webmail preview](https://courier-webmail-jv.stonybrioche1.chatgpt.site)
+- [Deployment guide](docs/DEPLOYMENT.md)
+- [Render Blueprint](render.yaml)
+- [Mail-host Compose stack](infra/compose.yaml)
+- [Record Register](RECORD_REGISTER.md)
 
-## Next steps
+The private Sites preview serves the webmail/PWA and business portal deployment guidance. Persistent business APIs run on the Render/Node server with its own SQLite database. Standalone Fastmail compatibility remains available in the private preview.
 
-1. Configure `FASTMAIL_API_TOKEN` through server environment secrets and redeploy. Use an eligible Fastmail plan and grant Email and Email submission scopes.
-2. Open Settings in Courier and select the live Fastmail mailbox.
-3. Verify receipt of an external message, reply with an attachment, refresh, and confirm the reply appears in Sent.
-4. Verify live search, folder moves, attachment download, draft synchronization, and interrupted-send recovery.
-5. Append results to RECORD_REGISTER.md and update this snapshot.
+## Live activation
 
-## Current product boundaries
+1. Review and approve the concrete Render deployment plan and its resource costs.
+2. Deploy the application and create the business owner account at /admin.
+3. Choose the domain and obtain a mail-capable host with a stable public IP and mail-port access.
+4. Configure Stalwart, TLS, inbound/outbound rules, spam protection, and a management credential.
+5. Set MAIL_SERVER_URL, MAIL_HOSTNAME, and MAIL_ADMIN_TOKEN on Render.
+6. Verify domain ownership, activate hosting, publish MX/SPF/DKIM/DMARC and PTR, invite the team, and activate mailboxes.
+7. Verify external mail, attachments, Sent placement, suspension, quotas, abuse limits, retries, backups, and restores.
 
-One Fastmail account is served by each private deployment. Recovery drafts are stored in the browser until synchronized. Email bodies are displayed as text. Authentication at the hosted boundary uses Sites identity. The local server binds to loopback.
+## Current limits
 
-The chosen provider, Courier branding, and green visual style were implementation decisions. The user authorized choosing the provider. No live mailbox credentials have been supplied.
+Desktop/mobile delivery uses an installable web app. Signed native installers and app-store releases are not included. Automatic billing, account email verification, and MFA are not implemented. Mail engine initialization and backup restoration require the future live environment. This build has not been verified as a complete production email hosting service.
 
-## Files and commands
+## Local commands
 
-The repository contains the application source, tests, configuration, build scripts, setup instructions, and work records. Generated deployment output and local delivery archives can be recreated from source. Runtime secrets are configured separately.
+Requires Node.js 24+. Run npm start, npm test, and npm run build from the project root. Open /admin for business administration and / for webmail. Development state is stored in ignored .data/. Keep APP_SECRET stable in production.
 
-```powershell
-npm test
-npm run build
-npm start
-```
-
-See [README.md](README.md) for connection instructions and [RECORD_REGISTER.md](RECORD_REGISTER.md) for the chronological work history. Update this file and the register when material work or verification changes.
+Update this snapshot and the Record Register when deployment or verification advances.

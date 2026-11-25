@@ -1,0 +1,10 @@
+import { readFile, mkdir, writeFile, copyFile } from 'node:fs/promises';
+const html = await readFile('web/index.html', 'utf8');
+const css = await readFile('web/style.css', 'utf8');
+const js = await readFile('web/app.js', 'utf8');
+const worker = await readFile('server/worker.js', 'utf8');
+await mkdir('dist/server', { recursive: true });
+await mkdir('dist/.openai', { recursive: true });
+await writeFile('dist/server/index.js', `const assets = ${JSON.stringify({ '/': [html, 'text/html'], '/style.css': [css, 'text/css'], '/app.js': [js, 'text/javascript'] })};\n${worker}`);
+await copyFile('.openai/hosting.json', 'dist/.openai/hosting.json');
+console.log('Built Courier Mail worker.');

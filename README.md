@@ -39,11 +39,11 @@ Keep the standalone Sites preview owner-private when it contains a Fastmail toke
 - Read, unread, star, archive, folder move, and bulk actions.
 - Compose, reply, reply all, forward, Cc, Bcc, signatures, and reusable reply templates.
 - Attachments up to a combined 10 MB, upload, download, and forwarding.
-- Immediate browser draft recovery. Close the live composer to sync a draft to Fastmail. Open Settings → Recovered drafts after a browser restart or connection failure.
+- Immediate browser draft recovery. Close the live composer to sync a draft to the connected mail server. Open Settings → Recovered drafts after a browser restart or connection failure.
 - Provider submission retries retain the same draft ID. A pending submission locks message contents until its outcome is resolved. JMAP submission state guards concurrent submission attempts.
 - Responsive layout, keyboard focus, labeled controls, and Ctrl/Cmd K to search.
 
-Mail content is rendered as plain text, including text extracted from HTML-only messages. Demo and live modes are clearly labeled. Fastmail is the source of truth for live messages and folders. Recovery drafts are local to the device until synchronized. Fastmail signatures and identities are managed in Fastmail itself.
+Mail content is rendered as plain text, including text extracted from HTML-only messages. Demo and live modes are clearly labeled. The connected JMAP server is the source of truth for live messages and folders. Recovery drafts are local to the device until synchronized. Sending identities are managed on the connected mail server.
 
 ## Build and verify
 
@@ -54,8 +54,8 @@ npm run build
 
 The build embeds the web assets into `dist/server/index.js`, a Cloudflare Worker module. `.openai/hosting.json` identifies the private Sites project. Native Sites publication packages this Worker and the manifest.
 
-The test suite covers webmail regression cases, tenant boundaries, sessions, DNS activation gates, provisioning, invitations, encryption, provider payloads, and the production HTTP entrypoint. Provider calls are simulated. Real delivery, DNS, spam handling, Docker startup, backup restore, and Stalwart behavior require validation on the connected infrastructure.
+The test suite covers webmail regression cases, tenant boundaries, sessions, DNS activation gates, provisioning, invitations, encryption, provider payloads, and the production HTTP entrypoint. Provider calls are simulated. Real delivery, DNS, spam handling, Stalwart startup, mail backup restoration, and provider behavior require validation on the connected mail infrastructure.
 
-The existing private Site previews the webmail and serves the business portal's deployment guidance. Persistent business APIs require the Render/Node deployment. No Render service, live mail host, final domain, or provider credentials have been configured in this session.
+The existing private Site previews the webmail and serves the business portal's deployment guidance. Persistent business APIs require the Render/Node deployment. The Render business application is live at https://courier-mail-sa4z.onrender.com, with administration at /admin. The final domain, mail host, and mail-server credentials are still pending.
 
 See [STATUS.md](STATUS.md) for the current readiness snapshot and [RECORD_REGISTER.md](RECORD_REGISTER.md) for the work history.

@@ -128,3 +128,31 @@ This register reconstructs the initial implementation from the work recorded in 
 | R072 | Requested Render workspace confirmation. | User confirmed Rankint360. Listed existing services and selected Ohio to match their region. |
 | R073 | Reviewed current Render Blueprint, disk, and compute-plan references. | Prepared one application service and a 1 GB persistent disk. No existing services are being adopted. Applying a reviewed plan requires user approval. |
 | R074 | Updated readiness and deployment documentation. | Records business backend, separate mail host, installable PWA, paid disk choice, verification, and remaining live setup. |
+
+## Publication and deployment planning, November 25, 2026
+
+| Record | Step | Result or evidence |
+| --- | --- | --- |
+| R075 | Published all expansion files to GitHub main. | Commit eae80374369b4da7e29543e411ddb41f232cf902 contains 41 files. Remote blob hashes match every local project file. |
+| R076 | Created and validated the Render Blueprint plan. | Blueprint exs-dc3go4jrjlhs73fql9ig, sync exe-dc3go4rrjlhs73fqla2g, planningOutcome planned. One new Ohio application service and 1 GB disk. |
+| R077 | Reviewed official Render resource pricing and requested approval. | Estimated $7.25/month before tax and usage. Application of the reviewed plan awaits the user's approval, required by Render. |
+| R078 | Exercised the SQLite application backup script. | The backup completed and PRAGMA integrity_check returned ok. The synthetic local backup was moved to work storage. |
+| R079 | Packaged the expanded source archive. | Includes application, administration, infrastructure, tests, and records. Runtime database and secrets are excluded by project ignore rules. |
+| R080 | Attempted private preview source synchronization. | Initial network access failed in the new turn. Requested and received the specific network permission for the retry. |
+
+[Review the Render plan](https://dashboard.render.com/blueprint/exs-dc3go4jrjlhs73fql9ig/sync/exe-dc3go4rrjlhs73fqla2g).
+
+## Live deployment approval and verification
+
+| Record | Step | Result or evidence |
+| --- | --- | --- |
+| R081 | Received approval for the reviewed paid Render plan. | User chose Approve and deploy for the approximately $7.25/month application and disk resources. |
+| R082 | Applied the approved Blueprint and monitored its deployment. | Service srv-dc3gpkeq1p3s738qlehg created in Ohio. Deploy dep-dc3gpkuq1p3s738qlft0 reached live on source commit eae80374369b4da7e29543e411ddb41f232cf902. |
+| R083 | Published the expanded private Sites preview. | Native deployment appgdep_6b070ce8061c8191a5d1dcdeb61381a2 succeeded from source commit 610599cc2d06744a4d5782d02ba1b2b575b2cb75. |
+| R084 | Verified production HTTP routes. | Root app, admin, platform config/session, manifest, and PNG icon returned HTTP 200. Database health returned HTTP 200 with status ok and database true after one transient edge 520. |
+| R085 | Recovered verification-client limitations. | PowerShell HTTPS failed with a TLS client authentication error. Node fetch successfully checked the public routes. Render log retrieval returned a temporary 503, so runtime log review remained limited. |
+| R086 | Verified the deployed business page in the browser. | Live HTTPS admin sign-in and registration entrypoints were present. Kept the deployed page open as a deliverable. |
+| R087 | Recorded the live deployment and remaining setup. | Business app is live. Final domain, mail-capable host, mail configuration, and real delivery verification remain pending. |
+| R088 | Retried runtime error-log review. | Render log retrieval recovered and returned no matching error entries. |
+
+[Live Courier Mail administration](https://courier-mail-sa4z.onrender.com/admin).

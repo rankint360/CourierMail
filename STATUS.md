@@ -18,16 +18,17 @@ Version 2 expands the webmail app into a deployable business email platform. The
 | Test suite | Passed | 20 tests, including the production Node HTTP entrypoint with an isolated database. |
 | Build and syntax | Passed | Worker build and modified JavaScript entrypoints checked. |
 | Admin browser QA | Passed for checked flows | Registration, domain reservation, DNS instructions, branding, Apps screen, and branded webmail. Mobile document width matches viewport. |
-| Docker and mail-stack QA | Pending | Docker is unavailable in the execution environment. |
+| Docker and mail-stack QA | Application container deployed | Render built and started the app container. Stalwart startup, real mail, and mail-volume restoration remain pending. |
 | Render account | Connected | User confirmed the Rankint360 workspace for deployment preparation. |
-| Render application | Deployment preparation | Blueprint includes a paid Starter service, Ohio region, and a 1 GB persistent disk. A reviewed plan must be approved before resources are created. |
+| Render application | Live and verified | https://courier-mail-sa4z.onrender.com. User approved the reviewed plan. Deployment dep-dc3gpkuq1p3s738qlft0 is live, with database health and public routes verified. |
 | SMTP/IMAP host | Pending | A separate mail-capable host is required. Render public web services expose HTTP. |
 | Domain and DNS | Pending | User will select the domain after the build. |
 | Live mail | Pending | Mail host, credentials, DNS, TLS, and external send/receive verification required. |
-| GitHub expansion update | In progress | Source and records are being published to the existing main branch. |
+| GitHub expansion update | Published and verified | All 41 files matched the local source at commit eae80374369b4da7e29543e411ddb41f232cf902. Follow-up records capture deployment planning. |
 
 ## Deliverables
 
+- [Live business application](https://courier-mail-sa4z.onrender.com/admin)
 - [Source repository](https://github.com/rankint360/CourierMail)
 - [Private webmail preview](https://courier-webmail-jv.stonybrioche1.chatgpt.site)
 - [Deployment guide](docs/DEPLOYMENT.md)
@@ -39,8 +40,8 @@ The private Sites preview serves the webmail/PWA and business portal deployment 
 
 ## Live activation
 
-1. Review and approve the concrete Render deployment plan and its resource costs.
-2. Deploy the application and create the business owner account at /admin.
+1. Create the business owner account at the deployed application /admin screen.
+2. Review the deployed business portal and install Courier on the desired devices.
 3. Choose the domain and obtain a mail-capable host with a stable public IP and mail-port access.
 4. Configure Stalwart, TLS, inbound/outbound rules, spam protection, and a management credential.
 5. Set MAIL_SERVER_URL, MAIL_HOSTNAME, and MAIL_ADMIN_TOKEN on Render.
@@ -56,3 +57,7 @@ Desktop/mobile delivery uses an installable web app. Signed native installers an
 Requires Node.js 24+. Run npm start, npm test, and npm run build from the project root. Open /admin for business administration and / for webmail. Development state is stored in ignored .data/. Keep APP_SECRET stable in production.
 
 Update this snapshot and the Record Register when deployment or verification advances.
+
+## Deployment verification
+
+Service srv-dc3gpkeq1p3s738qlehg runs in Ohio with a 1 GB persistent disk. Application commit eae80374369b4da7e29543e411ddb41f232cf902 is live. The public app, admin page, platform configuration/session routes, manifest, and icon returned HTTP 200. The health endpoint returned status ok with database true after one transient edge 520 response. The live admin sign-in screen was verified in the browser. Render log retrieval recovered after a temporary 503, and the error-log query returned no matching entries. Automatic Blueprint synchronization is disabled, while the service deploys code commits automatically. Documentation-only publication uses the skip-render marker.

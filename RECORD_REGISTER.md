@@ -81,6 +81,10 @@ This register reconstructs the initial implementation from the work recorded in 
 | R046 | Repeated tests, build, and syntax verification before upload. | Nine tests passed. `npm run build`, `node --check web/app.js`, and `node --check server/worker.js` succeeded. |
 | R047 | Created this register and STATUS.md. | Documents previous work, current deliverables, outstanding setup, and publication progress. |
 | R048 | Prepared project files for GitHub. | Includes source, tests, configuration, build scripts, and documentation. Generated `dist/`, local ZIP/tar archives, `.git/`, and runtime secrets follow the existing ignore and packaging workflow. |
+| R049 | Initialized the empty GitHub repository with STATUS.md. | Initial commit `2df350b042f992e8acf8eaae0388afb65c21875e` on `main`. |
+| R050 | Uploaded all 14 project files through the authenticated GitHub connector. | Source commit `3e46a3269727d38f8c9a5779ee8d7de3a93978e0`. Advanced `main` with the expected prior head and without force. |
+| R051 | Read the remote recursive source tree. | Confirmed all 14 file paths were present and the result was complete, with `truncated` false. |
+| R052 | Updated the register and current status to reflect the verified GitHub delivery. | Follow-up documentation commit records the completed upload. Fastmail connection and real provider verification remain pending. |
 
 ## Outstanding verification
 

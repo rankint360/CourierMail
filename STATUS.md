@@ -17,7 +17,7 @@ The webmail app is implemented and privately deployed. Demo mode is usable. A Fa
 | Private Sites deployment | Succeeded | Source commit `277edd1d5655a85a64bfc4f0b2a855e266d80f24`. |
 | Fastmail credentials | Pending | `FASTMAIL_API_TOKEN` has not been configured. |
 | Real email delivery and provider behavior | Pending | Requires the connected Fastmail account. |
-| GitHub handoff | In progress | Destination verified empty and writable. Register and status created. Full upload and remote verification pending. |
+| GitHub handoff | Published and verified | All 14 project source, configuration, test, and documentation files uploaded to `main`. Remote recursive tree confirmed the complete inventory at source commit `3e46a3269727d38f8c9a5779ee8d7de3a93978e0`. |
 
 ## Locations
 
@@ -28,12 +28,11 @@ The webmail app is implemented and privately deployed. Demo mode is usable. A Fa
 
 ## Next steps
 
-1. Complete and verify the GitHub upload of the source and both record files.
-2. Configure `FASTMAIL_API_TOKEN` through server environment secrets and redeploy. Use an eligible Fastmail plan and grant Email and Email submission scopes.
-3. Open Settings in Courier and select the live Fastmail mailbox.
-4. Verify receipt of an external message, reply with an attachment, refresh, and confirm the reply appears in Sent.
-5. Verify live search, folder moves, attachment download, draft synchronization, and interrupted-send recovery.
-6. Append results to RECORD_REGISTER.md and update this snapshot.
+1. Configure `FASTMAIL_API_TOKEN` through server environment secrets and redeploy. Use an eligible Fastmail plan and grant Email and Email submission scopes.
+2. Open Settings in Courier and select the live Fastmail mailbox.
+3. Verify receipt of an external message, reply with an attachment, refresh, and confirm the reply appears in Sent.
+4. Verify live search, folder moves, attachment download, draft synchronization, and interrupted-send recovery.
+5. Append results to RECORD_REGISTER.md and update this snapshot.
 
 ## Current product boundaries
 

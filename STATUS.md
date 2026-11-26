@@ -112,3 +112,6 @@ Linux Actions run 45874964399 completed successfully. The private Sites preview 
 Applied the outlined Zavrill SVG wordmark throughout default webmail and business administration. Dark sign-in panels use the inverse wordmark. Custom organization names retain their separate display. All HTML entrypoints now declare SVG, ICO, 32 px PNG, and 180 px Apple touch icons with cache versions. Updated the offline shell cache, asset serving, and icon exporter.
 
 Browser inspection confirmed the wordmarks and favicon declarations. Added HTTP coverage for the new favicon routes and content types. Publication and final validation are recorded below when complete.
+
+
+Platform branding is live from GitHub commit 04eeb146c82a601da5f5dfc42f7bc85d5042123c on Render deployment dep-dc47ostbedkc73d9ir80. Root and administration pages, ICO/PNG/Apple icons, and database health returned HTTP 200. Browser inspection confirmed the loaded SVG webmail wordmark and inverse sign-in logo at desktop and 390 px mobile widths. Linux Actions run 45877439183 succeeded. Private Sites deployment appgdep_6b087c869e488191819ff45ca54c043c also succeeded from Sites commit 408264a6e14073221f144740fc7644f1ed9fcbad. All 21 tests and the production build passed.

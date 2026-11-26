@@ -216,3 +216,7 @@ This register reconstructs the initial implementation from the work recorded in 
 | R123 | Completed favicon support. | Added ICO, 32 px PNG, and 180 px Apple touch assets alongside SVG. Updated all HTML entrypoints and the worker's ICO response type. |
 | R124 | Updated cached branding and exports. | New shell version caches wordmarks and favicon assets. The exporter regenerates all icon sizes and ICO. Existing mail data is preserved. |
 | R125 | Inspected rendered branding. | Browser review confirmed outlined logos in webmail and administration, four favicon declarations, and readable dark-background branding. |
+
+| R126 | Verified regression and publication. | All 21 tests and build passed. GitHub commit 04eeb146c82a601da5f5dfc42f7bc85d5042123c reached live on Render deployment dep-dc47ostbedkc73d9ir80. Linux Actions run 45877439183 succeeded. |
+| R127 | Published the private preview. | Sites deployment appgdep_6b087c869e488191819ff45ca54c043c succeeded from source 408264a6e14073221f144740fc7644f1ed9fcbad. |
+| R128 | Checked live branding and icons. | Webmail, administration, new favicon formats, and health returned HTTP 200. Browser inspection confirmed fully loaded wordmarks and mobile sign-in branding at 390 px. |

@@ -169,3 +169,6 @@ This register reconstructs the initial implementation from the work recorded in 
 | R094 | Documented Netcup activation and Render migration. | docs/NETCUP.md includes SMTP firewall rules, PTR/DNS, private wizard, DKIM, relay checks, TLS renewal, restore rehearsal, and preservation of APP_SECRET. Render remains running. |
 | R095 | Verified locally. | All 21 tests passed, application build succeeded, three shell scripts passed syntax checks, and git diff checks passed. Docker is absent locally. |
 | R096 | Added Linux deployment verification. | GitHub Actions validates Compose, both Caddy route modes, and the production app container with mounted file secrets. Remote execution remains pending publication. |
+| R097 | Published combined Netcup package. | GitHub main commit 56685d72b6699b8b6e29e1bed0f7a396319748d5 uses the skip-render marker and preserves the existing Render deployment. |
+| R098 | Verified Linux Docker runtime. | Actions run 45814231972 succeeded. Compose validation, shell syntax, both Caddy route modes, all tests, and the production container with private mounted secrets passed. |
+| R099 | Recorded production activation limits. | Live certificate issuance, Stalwart initialization, external delivery, and backup restoration remain pending the Netcup server and final domain. |

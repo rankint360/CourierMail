@@ -69,3 +69,7 @@ Added infra/netcup with a single-host Docker Compose stack for Courier, Stalwart
 Local verification passed all 21 tests, the application build, shell syntax checks for the deployment scripts, and git diff checks. Docker is unavailable on this workstation. Added a Linux GitHub Actions workflow to validate Compose, both Caddy routes, and a built production container with mounted secrets. Its remote result is recorded separately when available.
 
 Netcup deployment has not been applied. The server, final domain, DNS, certificate issuance, external mail delivery, and backup restoration still require live setup. Existing Render resources remain running. Registration defaults to disabled, and the public Stalwart route remains closed until initialization is complete.
+
+## Netcup verification result
+
+Published the combined deployment package in GitHub commit 56685d72b6699b8b6e29e1bed0f7a396319748d5. Linux Actions run 45814231972 completed successfully. All tests, Compose validation, shell syntax, both Caddy route modes, and the built production container with private mounted secrets passed. Certificate issuance, Stalwart initialization, external mail delivery, and full backup restoration require the actual host and domain.

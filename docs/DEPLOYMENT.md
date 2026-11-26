@@ -1,6 +1,6 @@
-# Deploy Courier Mail
+# Deploy Zavrill
 
-Courier Mail has two runtime components. The business application and webmail run on Render. Stalwart runs on a host that accepts public SMTP and IMAP connections. The domain can be selected after the application is deployed.
+Zavrill has two runtime components. The business application and webmail run on Render. Stalwart runs on a host that accepts public SMTP and IMAP connections. The domain can be selected after the application is deployed.
 
 ## Application on Render
 
@@ -13,7 +13,7 @@ Courier Mail has two runtime components. The business application and webmail ru
 
 Required production values are `NODE_ENV=production`, `DATA_DIR` pointing at the persistent disk, and `APP_SECRET` containing at least 32 characters. The Blueprint supplies these. `/healthz` checks the database and is the service health-check route.
 
-Render forwards inbound public traffic to one HTTP port per web service. It cannot expose this Compose stack's SMTP/IMAP listeners as a Render web service. Render also blocks outbound port 25. Courier's application uses HTTPS JMAP to reach the separate mail engine.
+Render forwards inbound public traffic to one HTTP port per web service. It cannot expose this Compose stack's SMTP/IMAP listeners as a Render web service. Render also blocks outbound port 25. Zavrill's application uses HTTPS JMAP to reach the separate mail engine.
 
 ## Stalwart mail host
 
@@ -22,7 +22,7 @@ Render forwards inbound public traffic to one HTTP port per web service. It cann
 3. From `infra/`, run `docker compose up -d` and inspect `docker compose logs mail` for the bootstrap administrator information.
 4. Keep port 8080 bound to loopback. Use an SSH tunnel such as `ssh -L 8080:127.0.0.1:8080 account@server` to reach the setup wizard at `http://127.0.0.1:8080` on your computer.
 5. Complete Stalwart's setup wizard. Configure the mail hostname, storage, HTTPS certificate, SMTP listeners, submission, IMAPS, DKIM generation, spam filtering, outbound limits, auto-ban, and delivery queues. Configure all listeners before relying on their published ports.
-6. Create a dedicated management API credential with the domain and account create/query/get/update permissions used by Courier. Configure it to allow the required management calls. Use a regular User role for customer mailboxes. Stalwart native Tenant administration requires its Enterprise edition. Courier's application enforces organization ownership independently.
+6. Create a dedicated management API credential with the domain and account create/query/get/update permissions used by Zavrill. Configure it to allow the required management calls. Use a regular User role for customer mailboxes. Stalwart native Tenant administration requires its Enterprise edition. Zavrill's application enforces organization ownership independently.
 7. Use Stalwart's authenticated HTTPS JMAP endpoint for management and mailbox sessions. Set the following secrets on Render and redeploy the application.
 
 | Variable | Value |
@@ -37,18 +37,18 @@ The adapter targets the Stalwart v1 `urn:stalwart:jmap` management API with `x:D
 
 1. In Business Admin, add a domain.
 2. Publish the unique `_courier` TXT record. Choose Check DNS to verify ownership. Each domain is globally unique in the application.
-3. Activate domain hosting. Courier creates or recovers the domain on Stalwart and displays the server-generated DNS zone, including its DKIM public records.
+3. Activate domain hosting. Zavrill creates or recovers the domain on Stalwart and displays the server-generated DNS zone, including its DKIM public records.
 4. Publish the mail host A/AAAA record and the business domain MX record. Configure PTR at the IP provider so it matches the mail hostname. Publish SPF, DKIM, and DMARC records. An IPv6 address should be advertised only after IPv6 delivery and reverse DNS are configured.
-5. Begin with DMARC monitoring, inspect legitimate senders, and then select the appropriate enforcement policy. Courier's DNS checklist checks ownership, expected MX, the presence of a single SPF record, and a DMARC record. Its SPF and DMARC indicators check record presence, with delivery-policy validation remaining an operational task.
-6. Invite your team. Courier generates an invitation link with a 48-hour expiry. Share it with the intended recipient. The app does not automatically send invitation emails.
+5. Begin with DMARC monitoring, inspect legitimate senders, and then select the appropriate enforcement policy. Zavrill's DNS checklist checks ownership, expected MX, the presence of a single SPF record, and a DMARC record. Its SPF and DMARC indicators check record presence, with delivery-policy validation remaining an operational task.
+6. Invite your team. Zavrill generates an invitation link with a 48-hour expiry. Share it with the intended recipient. The app does not automatically send invitation emails.
 7. Create mailboxes and assign them to active team members. Mailboxes on verified but inactive domains can be reserved. Activate them after domain hosting is active. Passwords are supplied during activation and sent to Stalwart without being stored in the mailbox record.
 8. Team members sign in to Business Admin and open their assigned mailbox using its password. The session stores the mailbox authorization encrypted with `APP_SECRET`. Opening webmail then uses that mailbox's JMAP credentials.
 
-Suspending a mailbox stops account sign-in, sending, and receipt while retaining mail. Suspending a team member's business access revokes their Courier sessions. Manage the mailbox separately when terminating its external IMAP access.
+Suspending a mailbox stops account sign-in, sending, and receipt while retaining mail. Suspending a team member's business access revokes their Zavrill sessions. Manage the mailbox separately when terminating its external IMAP access.
 
 ## Desktop and mobile apps
 
-Courier is an installable progressive web app using the same HTTPS application origin.
+Zavrill is an installable progressive web app using the same HTTPS application origin.
 
 - On Windows, macOS, Linux, and Android, use a browser's Install app command. Business Admin → Apps also offers an install prompt when supported.
 - On iOS/iPadOS, open the app in Safari, choose Share, then Add to Home Screen.

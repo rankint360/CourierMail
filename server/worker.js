@@ -46,7 +46,7 @@ function checkSet(result) {
 const summary = ['id', 'threadId', 'mailboxIds', 'keywords', 'from', 'to', 'subject', 'preview', 'receivedAt', 'hasAttachment', 'size'];
 async function api(request, env, url) {
   const mailToken = env.MAIL_AUTHORIZATION || env.FASTMAIL_API_TOKEN;
-  if (url.pathname === '/api/config') return json({ configured: Boolean(mailToken), provider: env.MAIL_AUTHORIZATION ? 'Courier Mail' : 'Fastmail' });
+  if (url.pathname === '/api/config') return json({ configured: Boolean(mailToken), provider: env.MAIL_AUTHORIZATION ? 'Zavrill' : 'Fastmail' });
   if (!mailToken) return json({ error: 'Sign in to your mailbox through Business Admin or configure the Fastmail connection.' }, 503);
   if (env.LOCAL_DEVELOPMENT !== 'true' && !request.headers.get('oai-authenticated-user-id')) return json({ error: 'Sign in to access this mailbox.' }, 401);
   if (env.OWNER_ID && request.headers.get('oai-authenticated-user-id') !== env.OWNER_ID && env.LOCAL_DEVELOPMENT !== 'true') return json({ error: 'This mailbox belongs to another user.' }, 403);

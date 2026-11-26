@@ -172,3 +172,14 @@ This register reconstructs the initial implementation from the work recorded in 
 | R097 | Published combined Netcup package. | GitHub main commit 56685d72b6699b8b6e29e1bed0f7a396319748d5 uses the skip-render marker and preserves the existing Render deployment. |
 | R098 | Verified Linux Docker runtime. | Actions run 45814231972 succeeded. Compose validation, shell syntax, both Caddy route modes, all tests, and the production container with private mounted secrets passed. |
 | R099 | Recorded production activation limits. | Live certificate issuance, Stalwart initialization, external delivery, and backup restoration remain pending the Netcup server and final domain. |
+
+## Zavrill brand selection — 2026-11-26
+
+| Record | Step | Result or evidence |
+| --- | --- | --- |
+| R100 | Accepted the selected platform name. | User instructed proceeding with Zavrill. The product descriptor is Business email. |
+| R101 | Updated product branding. | Webmail, administration, titles, application metadata, PWA manifest, provider display, schema defaults, and current guides use Zavrill. |
+| R102 | Preserved compatibility. | Existing database/browser storage identifiers, session cookies, DNS verification records, Docker project volumes, and service URLs remain stable. Both hosted-provider labels are accepted during rollout. |
+| R103 | Recorded brand and domain boundaries. | docs/BRAND.md documents identity and compatibility. No domain purchase, DNS change, repository rename, trademark filing, or Netcup provisioning has occurred. |
+| R104 | Ran regression checks. | All 21 tests passed, build succeeded, JavaScript syntax and git diff checks passed. |
+| R105 | Verified rendered branding. | Browser inspection confirmed Zavrill in the webmail wordmark, page title, and business administration screen. Corrected the administration title encoding found during inspection. |

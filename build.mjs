@@ -13,4 +13,4 @@ await mkdir('dist/server', { recursive: true });
 await mkdir('dist/.openai', { recursive: true });
 await writeFile('dist/server/index.js', `const assets = ${JSON.stringify({ '/': [html, 'text/html'], '/style.css': [css, 'text/css'], '/app.js': [js, 'text/javascript'], ...extraAssets })};\nconst binaryAssets = ${JSON.stringify(binaryAssets)};\n${worker}`);
 await copyFile('.openai/hosting.json', 'dist/.openai/hosting.json');
-console.log('Built Courier Mail worker.');
+console.log('Built Zavrill worker.');

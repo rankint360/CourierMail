@@ -29,7 +29,7 @@ const server = http.createServer(async (req, res) => {
     const body = Buffer.concat(chunks);
     const publicOrigin = env.APP_ORIGIN || (env.RENDER_EXTERNAL_URL ? env.RENDER_EXTERNAL_URL : `http://127.0.0.1:${port}`);
     const headers = new Headers(Object.entries(req.headers).filter(([, v]) => typeof v === 'string'));
-    // Browser identity comes from Courier sessions. Proxy identity headers are ignored here.
+    // Browser identity comes from Zavrill sessions. Proxy identity headers are ignored here.
     headers.delete('oai-authenticated-user-id');
     const request = new Request(new URL(req.url, publicOrigin), { method: req.method, headers, ...(body.length ? { body, duplex: 'half' } : {}) });
     let response;
@@ -49,5 +49,5 @@ const server = http.createServer(async (req, res) => {
   }
 });
 server.requestTimeout = 60000;
-server.listen(port, production ? '0.0.0.0' : '127.0.0.1', () => console.log(`Courier Mail: http://127.0.0.1:${port}\nBusiness Admin: http://127.0.0.1:${port}/admin`));
+server.listen(port, production ? '0.0.0.0' : '127.0.0.1', () => console.log(`Zavrill: http://127.0.0.1:${port}\nBusiness Admin: http://127.0.0.1:${port}/admin`));
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => server.close(() => { store.close(); process.exit(0); }));

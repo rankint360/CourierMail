@@ -1,6 +1,6 @@
 # Combined Netcup deployment
 
-Courier, its SQLite application database, Stalwart, and Caddy run on one Linux VPS using `infra/netcup/compose.yaml`. Render remains operational until a separately planned cutover. This package requires server and domain setup before it can host live email.
+Zavrill, its SQLite application database, Stalwart, and Caddy run on one Linux VPS using `infra/netcup/compose.yaml`. Render remains operational until a separately planned cutover. This package requires server and domain setup before it can host live email.
 
 ## Host preparation
 
@@ -8,7 +8,7 @@ Use a maintained Debian or Ubuntu VPS with a dedicated static public IPv4, Docke
 
 In Netcup SCP, remove the default SMTP mail block after reviewing the provider's policy. Permit inbound TCP 25, 465, 587, 993, 4190, 80 and 443 and UDP 443 if HTTP/3 is desired. Restrict SSH to trusted sources. Permit outbound TCP 25 and DNS. Docker-published ports require firewall rules in Docker's forwarding path or Netcup's upstream firewall. Do not rely solely on UFW rules. Port 8080 is bound to host loopback for private setup. Port 10000 has no host binding.
 
-Choose two distinct names, such as `courier.yourdomain.tld` for the app and `mail.yourdomain.tld` for mail. Point both A records to the VPS. Publish AAAA only if IPv6 is configured and tested. Set reverse DNS for the sending IP to the mail hostname in SCP, and ensure forward lookup matches.
+Choose two distinct names, such as `app.yourdomain.tld` for the app and `mail.yourdomain.tld` for mail. Point both A records to the VPS. Publish AAAA only if IPv6 is configured and tested. Set reverse DNS for the sending IP to the mail hostname in SCP, and ensure forward lookup matches.
 
 ## Prepare and boot
 
@@ -39,7 +39,7 @@ Read the initial credential using `docker compose logs mail` on the server. Trea
 
 Configure SMTP 25 with STARTTLS for server delivery, authenticated submission on 465 and 587, IMAPS 993, and ManageSieve 4190 if needed. Anonymous external relay must be denied. Require authentication and TLS for submission, configure spam and abuse limits, and restart Stalwart after the wizard. HTTP setup must no longer accept the temporary bootstrap credential.
 
-Create a Stalwart management API token with the domain/account administration permissions required by Courier. Enter it into `secrets/mail_admin_token` with a private editor and retain mode 0600. This is a server-side credential shared by Courier's tenant administration backend, so protect it as an administrative secret.
+Create a Stalwart management API token with the domain/account administration permissions required by Zavrill. Enter it into `secrets/mail_admin_token` with a private editor and retain mode 0600. This is a server-side credential shared by Zavrill's tenant administration backend, so protect it as an administrative secret.
 
 ## Mail TLS and renewal
 
@@ -63,7 +63,7 @@ Adjust `/opt/CourierMail` to the actual clone. Keep Caddy data persistent. After
 
 Set `MAIL_ROUTE=mail_ready` and temporarily `ALLOW_REGISTRATION=true` in `.env`, then run `node preflight.mjs` and `docker compose up -d`. Open the app's `/admin`, create the owner account, then set `ALLOW_REGISTRATION=false` and run `docker compose up -d` again. Public registration is an organization signup facility, so minimize this initial window.
 
-Add the business domain, verify the Courier TXT challenge, and activate hosting. Publish the actual Stalwart-generated DKIM selector and public key. Publish MX pointing to the mail hostname, SPF authorizing the sending IP, and DMARC with a monitored reporting address. Start with a reporting policy and tighten it after inspecting legitimate traffic. Add abuse@ and postmaster@ handling. Additional customer domains require their own ownership checks, DNS, and DKIM configuration.
+Add the business domain, verify the Zavrill TXT challenge, and activate hosting. Publish the actual Stalwart-generated DKIM selector and public key. Publish MX pointing to the mail hostname, SPF authorizing the sending IP, and DMARC with a monitored reporting address. Start with a reporting policy and tighten it after inspecting legitimate traffic. Add abuse@ and postmaster@ handling. Additional customer domains require their own ownership checks, DNS, and DKIM configuration.
 
 Check `https://APP_HOSTNAME/healthz` and `https://MAIL_HOSTNAME/.well-known/jmap`. The app reaches mail over HTTPS using Caddy's Docker network alias and the publicly trusted certificate. JMAP discovery must advertise the public mail hostname for API, upload, and download URLs.
 
@@ -90,7 +90,7 @@ Set the new HTTPS origins and provider URLs, restart, test existing sign-in and 
 - Confirm SMTP inbound and outbound connectivity from external hosts and verify PTR, SPF, DKIM, and DMARC results.
 - Send and receive with Gmail and Outlook, including attachments, replies, Sent placement, and delivery retries.
 - Verify an unauthenticated external relay attempt is rejected and authenticated submission succeeds with TLS.
-- Check tenant isolation, invitations, mailbox quotas, suspension, and password changes through Courier.
+- Check tenant isolation, invitations, mailbox quotas, suspension, and password changes through Zavrill.
 - Test ports 465, 587 and 993 with `openssl s_client`, checking hostname, certificate chain, and expiration.
 - Verify bootstrap access is disabled, secrets remain private, the backup restores successfully, and renewal runs automatically.
 - Monitor disk space, the mail queue, failed authentication, abuse rates, container health, certificate expiry, and off-server backups.

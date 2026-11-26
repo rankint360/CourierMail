@@ -1,4 +1,4 @@
-# Courier Mail Status
+# Zavrill Status
 
 Updated November 25, 2026, America/Los_Angeles.
 
@@ -41,7 +41,7 @@ The private Sites preview serves the webmail/PWA and business portal deployment 
 ## Live activation
 
 1. Create the business owner account at the deployed application /admin screen.
-2. Review the deployed business portal and install Courier on the desired devices.
+2. Review the deployed business portal and install Zavrill on the desired devices.
 3. Choose the domain and obtain a mail-capable host with a stable public IP and mail-port access.
 4. Configure Stalwart, TLS, inbound/outbound rules, spam protection, and a management credential.
 5. Set MAIL_SERVER_URL, MAIL_HOSTNAME, and MAIL_ADMIN_TOKEN on Render.
@@ -64,7 +64,7 @@ Service srv-dc3gpkeq1p3s738qlehg runs in Ohio with a 1 GB persistent disk. Appli
 
 ## Combined Netcup preparation — 2026-11-26
 
-Added infra/netcup with a single-host Docker Compose stack for Courier, Stalwart, and Caddy. It includes persistent application/mail storage, HTTPS routing, private bootstrap access, file-based secrets, setup and preflight tools, certificate synchronization, and cold backups. docs/NETCUP.md covers host preparation, DNS/PTR, mail TLS renewal, Stalwart setup, restore rehearsal, and preserving existing Render accounts during migration.
+Added infra/netcup with a single-host Docker Compose stack for Zavrill, Stalwart, and Caddy. It includes persistent application/mail storage, HTTPS routing, private bootstrap access, file-based secrets, setup and preflight tools, certificate synchronization, and cold backups. docs/NETCUP.md covers host preparation, DNS/PTR, mail TLS renewal, Stalwart setup, restore rehearsal, and preserving existing Render accounts during migration.
 
 Local verification passed all 21 tests, the application build, shell syntax checks for the deployment scripts, and git diff checks. Docker is unavailable on this workstation. Added a Linux GitHub Actions workflow to validate Compose, both Caddy routes, and a built production container with mounted secrets. Its remote result is recorded separately when available.
 
@@ -73,3 +73,11 @@ Netcup deployment has not been applied. The server, final domain, DNS, certifica
 ## Netcup verification result
 
 Published the combined deployment package in GitHub commit 56685d72b6699b8b6e29e1bed0f7a396319748d5. Linux Actions run 45814231972 completed successfully. All tests, Compose validation, shell syntax, both Caddy route modes, and the built production container with private mounted secrets passed. Certificate issuance, Stalwart initialization, external mail delivery, and full backup restoration require the actual host and domain.
+
+## Zavrill brand selection — 2026-11-26
+
+The user selected Zavrill as the platform brand. Updated webmail, administration, page metadata, PWA naming, hosted-provider display, new-organization branding defaults, package metadata, and current deployment guides. docs/BRAND.md records the display name, Business email descriptor, intended domain, and compatibility choices.
+
+Existing database files, browser storage, sessions, Compose volumes, and DNS verification identifiers retain their established names. This preserves existing state during the rebrand. New shell caches use Zavrill naming and retire old shell caches on service-worker activation. Existing custom organization branding is preserved.
+
+All 21 tests passed, the production build succeeded, JavaScript syntax checks passed, and git diff checks passed. Preview and GitHub publication verification are recorded below when complete. The selected domain has not been registered or connected by this work.

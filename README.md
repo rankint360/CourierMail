@@ -1,4 +1,6 @@
-# Courier Mail
+# Zavrill
+
+**Business email.** Formerly developed under the working name Courier Mail. See the [brand and compatibility notes](docs/BRAND.md).
 
 A business email platform with organization administration, domain verification, mailbox provisioning, webmail, and installable desktop/mobile web apps. Stalwart v1 supplies the mail engine. The original Fastmail connection remains available for standalone webmail. Requires Node.js 24 or later and has no npm dependencies.
 
@@ -12,7 +14,7 @@ Open http://127.0.0.1:4173 for webmail and http://127.0.0.1:4173/admin for busin
 
 ## Business email hosting
 
-For Courier and Stalwart on one Netcup VPS, use the [combined Netcup deployment guide](docs/NETCUP.md). It includes Caddy HTTPS, private mail initialization, persistent volumes, file secrets, mail TLS renewal, backups, and Render migration steps.
+For Zavrill and Stalwart on one Netcup VPS, use the [combined Netcup deployment guide](docs/NETCUP.md). It includes Caddy HTTPS, private mail initialization, persistent volumes, file secrets, mail TLS renewal, backups, and Render migration steps.
 
 The Render Blueprint deploys the business application with a persistent disk. The `infra/compose.yaml` stack prepares Stalwart on a mail-capable Linux host. Render handles the application over HTTP, while Stalwart handles SMTP, IMAP, JMAP, storage, spam filtering, and delivery queues.
 
@@ -22,7 +24,7 @@ See [deployment instructions](docs/DEPLOYMENT.md) for the Render Blueprint, serv
 
 ## Desktop and mobile
 
-Courier is a progressive web app. Install it from a supported desktop/Android browser, or use Safari's Add to Home Screen on iOS. The service worker caches the application shell and excludes mail API responses. Browser-local draft recovery is available. Native app-store packages and signed installers are not included.
+Zavrill is a progressive web app. Install it from a supported desktop/Android browser, or use Safari's Add to Home Screen on iOS. The service worker caches the application shell and excludes mail API responses. Browser-local draft recovery is available. Native app-store packages and signed installers are not included.
 
 ## Connect real email
 
@@ -30,9 +32,9 @@ Create a Fastmail JMAP API token with **Email** and **Email submission** scopes.
 
 For standalone local webmail, set `FASTMAIL_API_TOKEN` in the process environment, then run `npm run start:webmail`. `.env.example` documents the variables. The application does not automatically load `.env` files. Node's built-in `--env-file` can load a local ignored file, for example `node --env-file=.env local.mjs`. The production business server uses each signed-in user's mailbox connection.
 
-For the hosted private Site, set `FASTMAIL_API_TOKEN` as a secret using Sites runtime environment settings, then redeploy. In Courier, open Settings and select **Open live Fastmail mailbox**. The token stays server-side.
+For the hosted private Site, set `FASTMAIL_API_TOKEN` as a secret using Sites runtime environment settings, then redeploy. In Zavrill, open Settings and select **Open live Fastmail mailbox**. The token stays server-side.
 
-Keep the standalone Sites preview owner-private when it contains a Fastmail token. This compatibility mode serves a single Fastmail account and supports optional `OWNER_ID`. Business organizations and persistent administration run on the Render/Node server using Courier sessions and a separate mail engine.
+Keep the standalone Sites preview owner-private when it contains a Fastmail token. This compatibility mode serves a single Fastmail account and supports optional `OWNER_ID`. Business organizations and persistent administration run on the Render/Node server using Zavrill sessions and a separate mail engine.
 
 ## Included workflows
 

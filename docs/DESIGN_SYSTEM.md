@@ -58,3 +58,8 @@ The default system is light. The inverse logo and dark brand panels are presenta
 ## Voice
 
 Write with direct, calm language. Tell people what happened and what they can do next. Prefer “Domain verified,” “Save draft,” and “Try again” over technical server terminology. Acknowledge pending work, preserve the user's message, and avoid implying guaranteed delivery or security.
+
+
+## Platform integration
+
+Webmail and business administration use the outlined SVG wordmark. Dark sign-in panels use the inverse wordmark. Custom customer names retain their organization-specific display; default Zavrill organizations retain the Zavrill wordmark. All main HTML entrypoints include SVG, 32 px PNG, ICO, and 180 px Apple touch icons. The icons are versioned for browser cache refresh, and the service worker caches the platform wordmarks and favicon assets. Existing browser mail data remains intact.

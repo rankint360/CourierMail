@@ -18,3 +18,7 @@ input:not([type=checkbox]):not([type=color]),textarea,select{border-color:var(--
 .error-banner{color:var(--z-danger);background:var(--z-danger-soft)}.unread-dot{background:var(--green)}.message-row.selected{background:var(--z-primary-soft)}
 .outline-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;text-decoration:none;color:var(--green);border:1px solid var(--green);border-radius:var(--z-radius-md)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Shared platform wordmark and product descriptor. */
+.brand-logo{display:block;width:140px;height:44px;object-fit:contain}.brand-logo-light{display:none}.brand-product{font-size:12px;letter-spacing:.02em;font-weight:500;color:var(--z-muted)}
+.brand{padding-left:10px;padding-right:0;gap:8px;letter-spacing:normal}.brand:has(.brand-logo){flex-wrap:nowrap;row-gap:0}.brand-product{line-height:1.4}

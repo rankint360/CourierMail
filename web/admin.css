@@ -6,3 +6,7 @@
 .setup-callout{background:var(--z-ink)}.setup-callout .primary{background:var(--z-mint);color:var(--z-ink)}.setup-callout .primary:hover{background:#A5E1CC}
 .portal-form input,.portal-form select,.portal-form textarea{border-color:var(--z-input-border);min-height:44px}.portal-form label{color:var(--z-muted)}
 .auth-error,.form-error{color:var(--z-danger)}.auth-error{background:var(--z-danger-soft)}
+
+.auth-intro .brand-logo{display:none}.auth-intro .brand-logo-light{display:block;width:178px;height:52px;object-fit:contain}.auth-intro .brand-product{color:#D3DEF0}.portal-nav .brand{padding-left:10px;gap:8px}.portal-nav .brand-logo{width:145px;height:42px}.auth-intro a:focus-visible{outline-color:var(--z-mint)}
+
+.portal-nav .brand-product{display:none}

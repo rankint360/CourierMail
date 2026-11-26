@@ -4,7 +4,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, x => ({ '&':'&amp;'
 let user = null, data = null, tabName = 'Overview', registration = false, available = true, config = {};
 let installEvent;
 const tabs = ['Overview', 'Domains', 'Mailboxes', 'Team', 'Branding', 'Security', 'Apps', 'Operations'];
-const brand = '<span class="brandmark"><img src="/brand/mark.svg" alt="" width="36" height="36"></span>Zavrill <span class="small">business</span>';
+const brand = '<img class="brand-logo" src="/brand/wordmark.svg" alt="Zavrill" width="154" height="44"><img class="brand-logo-light" src="/brand/wordmark-inverse.svg" alt="Zavrill" width="154" height="44"><span class="brand-product">business</span>';
 function toast(text) { const box = document.querySelector('#toast'); box.textContent = text; box.style.display = 'block'; clearTimeout(toast.timer); toast.timer = setTimeout(() => box.style.display = 'none', 6500); }
 async function api(path, body) {
   const response = await fetch(`/api/platform/${path}`, { ...(body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {}) });

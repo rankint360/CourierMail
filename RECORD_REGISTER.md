@@ -206,3 +206,13 @@ This register reconstructs the initial implementation from the work recorded in 
 | R119 | Published the private preview. | Sites deployment appgdep_6b087834b5508191a875a891c5ec5ee6 succeeded from source 2c35b2aec79d03bd60fb5851d6231eae0e7fba95. |
 | R120 | Verified production endpoints and Linux checks. | /design-system, shared CSS, logo SVGs, manifest, and database health returned HTTP 200. Actions run 45874964399 succeeded. |
 | R121 | Verified the published visual reference. | Browser screenshot confirmed the folded-Z identity, outlined wordmark, cobalt/mint palette, and desktop layout on the live Render host. |
+
+
+## Platform identity integration — 2026-11-26
+
+| Record | Step | Result or evidence |
+| --- | --- | --- |
+| R122 | Applied outlined logos to the platform. | Webmail and administration use SVG wordmarks; dark sign-in panels use the inverse variant. Default business contexts retain the Zavrill logo while custom organization names remain separate. |
+| R123 | Completed favicon support. | Added ICO, 32 px PNG, and 180 px Apple touch assets alongside SVG. Updated all HTML entrypoints and the worker's ICO response type. |
+| R124 | Updated cached branding and exports. | New shell version caches wordmarks and favicon assets. The exporter regenerates all icon sizes and ICO. Existing mail data is preserved. |
+| R125 | Inspected rendered branding. | Browser review confirmed outlined logos in webmail and administration, four favicon declarations, and readable dark-background branding. |

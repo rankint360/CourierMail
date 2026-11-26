@@ -105,3 +105,10 @@ All 21 tests passed, including HTTP coverage for every new public design asset. 
 GitHub application commit 09bd10254b3c95418b815e4688b6277749c57831 is live on Render deployment dep-dc47g8o473hc7398epc0. The public /design-system page, CSS tokens, SVG logo assets, PWA manifest, and database health endpoint returned HTTP 200 with the expected content. The published design-system page was visually verified in the browser.
 
 Linux Actions run 45874964399 completed successfully. The private Sites preview also published successfully as deployment appgdep_6b087834b5508191a875a891c5ec5ee6 from Sites source 2c35b2aec79d03bd60fb5851d6231eae0e7fba95. No mail-provider, DNS, domain, or server-provisioning settings changed.
+
+
+## Platform logo and favicon integration — 2026-11-26
+
+Applied the outlined Zavrill SVG wordmark throughout default webmail and business administration. Dark sign-in panels use the inverse wordmark. Custom organization names retain their separate display. All HTML entrypoints now declare SVG, ICO, 32 px PNG, and 180 px Apple touch icons with cache versions. Updated the offline shell cache, asset serving, and icon exporter.
+
+Browser inspection confirmed the wordmarks and favicon declarations. Added HTTP coverage for the new favicon routes and content types. Publication and final validation are recorded below when complete.

@@ -8,7 +8,7 @@ for (const [path, type] of [['admin.html','text/html'],['admin.css','text/css'],
   extraAssets[path === 'admin.html' ? '/admin' : path === 'design-system.html' ? '/design-system' : '/' + path] = [await readFile('web/' + path, 'utf8'), type];
 }
 const binaryAssets = {};
-for (const name of ['icon-192.png', 'icon-512.png']) binaryAssets['/' + name] = (await readFile('web/' + name)).toString('base64');
+for (const name of ['icon-192.png', 'icon-512.png', 'favicon-32.png', 'apple-touch-icon.png', 'favicon.ico']) binaryAssets['/' + name] = (await readFile('web/' + name)).toString('base64');
 await mkdir('dist/server', { recursive: true });
 await mkdir('dist/.openai', { recursive: true });
 await writeFile('dist/server/index.js', `const assets = ${JSON.stringify({ '/': [html, 'text/html'], '/style.css': [css, 'text/css'], '/app.js': [js, 'text/javascript'], ...extraAssets })};\nconst binaryAssets = ${JSON.stringify(binaryAssets)};\n${worker}`);

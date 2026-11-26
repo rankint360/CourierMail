@@ -150,7 +150,7 @@ export default {
     try {
       if (url.pathname.startsWith('/api/')) return await api(request, env, url);
       if (typeof binaryAssets !== 'undefined' && binaryAssets[url.pathname]) {
-        return new Response(Uint8Array.from(atob(binaryAssets[url.pathname]), x => x.charCodeAt(0)), { headers: { ...security, 'Content-Type': 'image/png' } });
+        return new Response(Uint8Array.from(atob(binaryAssets[url.pathname]), x => x.charCodeAt(0)), { headers: { ...security, 'Content-Type': url.pathname.endsWith('.ico') ? 'image/x-icon' : 'image/png' } });
       }
       const asset = assets[url.pathname];
       if (!asset) return new Response('Not found', { status: 404 });

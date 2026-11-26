@@ -3,7 +3,7 @@
 Add-Type -AssemblyName System.Drawing
 $projectRoot = Split-Path $PSScriptRoot -Parent
 $points = @(128,144,384,144,384,200,224,312,384,312,384,368,128,368,128,312,288,200,128,200)
-foreach ($size in @(192,512)) {
+foreach ($size in @(32,180,192,512)) {
     $bitmap = [Drawing.Bitmap]::new($size * 3, $size * 3)
     $graphics = [Drawing.Graphics]::FromImage($bitmap)
     $graphics.SmoothingMode = [Drawing.Drawing2D.SmoothingMode]::AntiAlias
@@ -21,9 +21,18 @@ foreach ($size in @(192,512)) {
     $resizer = [Drawing.Graphics]::FromImage($output)
     $resizer.InterpolationMode = [Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
     $resizer.DrawImage($bitmap,0,0,$size,$size)
-    $output.Save((Join-Path $projectRoot "web/icon-$size.png"),[Drawing.Imaging.ImageFormat]::Png)
+    $fileName = if ($size -eq 32) { 'favicon-32.png' } elseif ($size -eq 180) { 'apple-touch-icon.png' } else { "icon-$size.png" }
+    $output.Save((Join-Path $projectRoot "web/$fileName"),[Drawing.Imaging.ImageFormat]::Png)
     $resizer.Dispose(); $output.Dispose(); $mint.Dispose(); $white.Dispose(); $graphics.Dispose(); $bitmap.Dispose()
 }
+
+$png = [IO.File]::ReadAllBytes((Join-Path $projectRoot 'web/favicon-32.png'))
+$iconStream = [IO.File]::Create((Join-Path $projectRoot 'web/favicon.ico'))
+$writer = [IO.BinaryWriter]::new($iconStream)
+$writer.Write([uint16]0); $writer.Write([uint16]1); $writer.Write([uint16]1)
+$writer.Write([byte]32); $writer.Write([byte]32); $writer.Write([byte]0); $writer.Write([byte]0)
+$writer.Write([uint16]1); $writer.Write([uint16]32); $writer.Write([uint32]$png.Length); $writer.Write([uint32]22)
+$writer.Write($png); $writer.Dispose(); $iconStream.Dispose()
 
 # Outline the wordmark so SVG exports do not depend on installed fonts.
 $lettering = [Drawing.Drawing2D.GraphicsPath]::new()

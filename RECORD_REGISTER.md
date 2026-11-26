@@ -201,3 +201,8 @@ This register reconstructs the initial implementation from the work recorded in 
 | R115 | Checked accessibility color pairs. | Ink on white 14.28:1, slate on white 6.06:1, white on cobalt 5.91:1, ink on mint 11.34:1, slate on canvas 5.65:1, and input borders on white 3.42:1. This is not a complete accessibility audit. |
 | R116 | Reviewed rendered layouts. | Browser screenshots checked desktop and 390 px mobile reference layouts, webmail, administration, SVG wordmarks, and a working color-copy confirmation. |
 | R117 | Ran regression checks. | All 21 tests passed with HTTP coverage of the new asset routes. Build, JavaScript syntax, SVG XML, and git diff checks passed. |
+
+| R118 | Published design system to GitHub and Render. | Application commit 09bd10254b3c95418b815e4688b6277749c57831 reached live in deployment dep-dc47g8o473hc7398epc0. |
+| R119 | Published the private preview. | Sites deployment appgdep_6b087834b5508191a875a891c5ec5ee6 succeeded from source 2c35b2aec79d03bd60fb5851d6231eae0e7fba95. |
+| R120 | Verified production endpoints and Linux checks. | /design-system, shared CSS, logo SVGs, manifest, and database health returned HTTP 200. Actions run 45874964399 succeeded. |
+| R121 | Verified the published visual reference. | Browser screenshot confirmed the folded-Z identity, outlined wordmark, cobalt/mint palette, and desktop layout on the live Render host. |

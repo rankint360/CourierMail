@@ -98,3 +98,10 @@ Created a Zavrill identity using ink navy #172B46, cobalt #3159D8, mint #C1EFDF,
 The shared CSS tokens now power webmail, administration, and a visual reference at /design-system. The reference includes copyable swatches, logo downloads, typography, component states, forms, and usage guidance. docs/DESIGN_SYSTEM.md documents spacing, color roles, accessibility measurements, and asset use. Existing organization color choices remain intact.
 
 All 21 tests passed, including HTTP coverage for every new public design asset. Build, JavaScript syntax, SVG XML, and git diff checks passed. Browser review covered desktop and 390 px mobile layouts, wordmarks, webmail, administration, and the copy-color interaction. Key default text contrast pairs measure 5.65:1 or higher. Publication results are recorded below when complete.
+
+
+## Design system publication verification
+
+GitHub application commit 09bd10254b3c95418b815e4688b6277749c57831 is live on Render deployment dep-dc47g8o473hc7398epc0. The public /design-system page, CSS tokens, SVG logo assets, PWA manifest, and database health endpoint returned HTTP 200 with the expected content. The published design-system page was visually verified in the browser.
+
+Linux Actions run 45874964399 completed successfully. The private Sites preview also published successfully as deployment appgdep_6b087834b5508191a875a891c5ec5ee6 from Sites source 2c35b2aec79d03bd60fb5851d6231eae0e7fba95. No mail-provider, DNS, domain, or server-provisioning settings changed.

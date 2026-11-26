@@ -89,3 +89,12 @@ Zavrill preview publication succeeded. The existing owner-private preview URL is
 GitHub application commit 53e9125aecfb8a454e6511e2fce945cb39a942e8 is live on Render deployment dep-dc4774i9lscs73dvoddg. Root webmail and /admin return HTTP 200 with Zavrill titles. The PWA manifest returns name Zavrill. /healthz returns HTTP 200, status ok, and database true. The live administration screen was visually verified in the browser.
 
 Linux Actions run 45872319241 passed all tests, Compose and shell validation, both Caddy route modes, and production-container startup with file-mounted secrets. The owner-private Sites preview also published successfully. Domain registration, DNS connection, final Netcup activation, and live mail-delivery testing remain pending.
+
+
+## Design system 1.0 — 2026-11-26
+
+Created a Zavrill identity using ink navy #172B46, cobalt #3159D8, mint #C1EFDF, slate #52647B, and canvas #F5F7FB. The folded-Z logo references a letter crease and a direct communication route. Primary, inverse, and monochrome symbols plus outlined wordmarks are available as SVG. Browser and installable-app icons were regenerated.
+
+The shared CSS tokens now power webmail, administration, and a visual reference at /design-system. The reference includes copyable swatches, logo downloads, typography, component states, forms, and usage guidance. docs/DESIGN_SYSTEM.md documents spacing, color roles, accessibility measurements, and asset use. Existing organization color choices remain intact.
+
+All 21 tests passed, including HTTP coverage for every new public design asset. Build, JavaScript syntax, SVG XML, and git diff checks passed. Browser review covered desktop and 390 px mobile layouts, wordmarks, webmail, administration, and the copy-color interaction. Key default text contrast pairs measure 5.65:1 or higher. Publication results are recorded below when complete.

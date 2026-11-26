@@ -1,5 +1,5 @@
 PRAGMA foreign_keys = ON;
-CREATE TABLE IF NOT EXISTS organizations (id TEXT PRIMARY KEY, name TEXT NOT NULL, brand TEXT NOT NULL DEFAULT 'Zavrill', color TEXT NOT NULL DEFAULT '#174e40', plan TEXT NOT NULL DEFAULT 'starter', created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS organizations (id TEXT PRIMARY KEY, name TEXT NOT NULL, brand TEXT NOT NULL DEFAULT 'Zavrill', color TEXT NOT NULL DEFAULT '#3159D8', plan TEXT NOT NULL DEFAULT 'starter', created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id), email TEXT NOT NULL UNIQUE, name TEXT NOT NULL, password_hash TEXT NOT NULL, role TEXT NOT NULL CHECK(role IN ('owner','admin','member')), active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS sessions (hash TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id), expires INTEGER NOT NULL, mail_auth TEXT, mailbox_id TEXT);
 CREATE TABLE IF NOT EXISTS domains (id TEXT PRIMARY KEY, org_id TEXT NOT NULL REFERENCES organizations(id), name TEXT NOT NULL UNIQUE, token TEXT NOT NULL, verified_at TEXT, provider_id TEXT, status TEXT NOT NULL DEFAULT 'pending', dns_json TEXT NOT NULL DEFAULT '{}', error TEXT, created_at TEXT NOT NULL);

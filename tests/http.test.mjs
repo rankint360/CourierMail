@@ -24,7 +24,7 @@ test('production HTTP entrypoint serves the app and business API with persistent
     await new Promise(resolve => setTimeout(resolve, 50));
   }
   assert.equal(ready, true);
-  for (const path of ['/', '/admin', '/admin.js', '/admin.css', '/manifest.webmanifest', '/sw.js', '/icon-192.png', '/icon-512.png']) assert.equal((await fetch(origin + path)).status, 200, path);
+  for (const path of ['/', '/admin', '/admin.js', '/admin.css', '/manifest.webmanifest', '/sw.js', '/icon-192.png', '/icon-512.png', '/design-system', '/design-tokens.css', '/design-system.css', '/design-system.js', '/brand/mark.svg', '/brand/mark-inverse.svg', '/brand/mark-mono.svg', '/brand/wordmark.svg', '/brand/wordmark-inverse.svg']) assert.equal((await fetch(origin + path)).status, 200, path);
   const manifest = await (await fetch(origin + '/manifest.webmanifest')).json();
   assert.equal(manifest.display, 'standalone');
   assert.equal((await fetch(origin + '/api/messages')).status, 401);

@@ -2,6 +2,8 @@
 
 **Business email.** Formerly developed under the working name Courier Mail. See the [brand and compatibility notes](docs/BRAND.md).
 
+The [design system](docs/DESIGN_SYSTEM.md) documents the folded-Z logo, palette, typography, and reusable components. Open `/design-system` on the app host for the visual reference and downloadable SVG assets.
+
 A business email platform with organization administration, domain verification, mailbox provisioning, webmail, and installable desktop/mobile web apps. Stalwart v1 supplies the mail engine. The original Fastmail connection remains available for standalone webmail. Requires Node.js 24 or later and has no npm dependencies.
 
 ## Run locally

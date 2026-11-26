@@ -7,7 +7,7 @@ Zavrill is the selected brand for the business email hosting platform previously
 - Display name and spelling are **Zavrill**, with a capital Z and two final l characters.
 - The descriptor is **Business email**.
 - The product includes business email hosting, webmail, organization administration, and installable desktop/mobile web apps.
-- The existing green palette and envelope symbol remain in use for this rebrand. A bespoke logo has not been commissioned.
+- The identity uses ink navy, cobalt, and mint, with a folded-Z symbol inspired by a letter crease and a direct delivery route. See DESIGN_SYSTEM.md for tokens, usage, and assets.
 - `zavrill.com` is the intended domain, subject to registration and connection. The application does not assume ownership of it.
 
 ## Compatibility

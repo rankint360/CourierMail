@@ -188,3 +188,16 @@ This register reconstructs the initial implementation from the work recorded in 
 | R108 | Verified Render rollout. | Deployment dep-dc4774i9lscs73dvoddg reached live. Webmail, administration, manifest, and database health returned HTTP 200 with the new brand. |
 | R109 | Verified Linux deployment checks. | Actions run 45872319241 succeeded, including all tests, both Caddy route modes, Compose validation, and the production container with mounted secrets. |
 | R110 | Verified live administration visually. | The browser showed Zavrill branding, sign-in, and account creation on the existing Render address. The private preview retains its sign-in gate. |
+
+
+## Zavrill design system — 2026-11-26
+
+| Record | Step | Result or evidence |
+| --- | --- | --- |
+| R111 | Selected the visual direction. | Ink navy, cobalt, and mint balance business credibility, clear primary actions, and a restrained accent. |
+| R112 | Designed the folded-Z logo. | Created primary, inverse, monochrome, outlined-wordmark SVGs, and updated favicon and 192/512 px maskable installation icons. |
+| R113 | Added reusable design tokens. | Shared CSS defines brand and status colors, spacing, typography, focus, radii, and shadows. Applied the palette to webmail and administration. |
+| R114 | Built the visual design-system reference. | /design-system includes downloadable artwork, copyable hex values, typography, forms, action states, and usage rules. Added docs/DESIGN_SYSTEM.md. |
+| R115 | Checked accessibility color pairs. | Ink on white 14.28:1, slate on white 6.06:1, white on cobalt 5.91:1, ink on mint 11.34:1, slate on canvas 5.65:1, and input borders on white 3.42:1. This is not a complete accessibility audit. |
+| R116 | Reviewed rendered layouts. | Browser screenshots checked desktop and 390 px mobile reference layouts, webmail, administration, SVG wordmarks, and a working color-copy confirmation. |
+| R117 | Ran regression checks. | All 21 tests passed with HTTP coverage of the new asset routes. Build, JavaScript syntax, SVG XML, and git diff checks passed. |

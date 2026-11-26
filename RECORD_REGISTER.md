@@ -183,3 +183,8 @@ This register reconstructs the initial implementation from the work recorded in 
 | R103 | Recorded brand and domain boundaries. | docs/BRAND.md documents identity and compatibility. No domain purchase, DNS change, repository rename, trademark filing, or Netcup provisioning has occurred. |
 | R104 | Ran regression checks. | All 21 tests passed, build succeeded, JavaScript syntax and git diff checks passed. |
 | R105 | Verified rendered branding. | Browser inspection confirmed Zavrill in the webmail wordmark, page title, and business administration screen. Corrected the administration title encoding found during inspection. |
+| R106 | Published Zavrill private preview. | Deployment appgdep_6b08736d0400819188f0ed5cb3d9c3a9 succeeded from Sites source 9081b616f037298731e8c49c6c9a6c399930b869. Owner-only access was preserved and the Site display title is Zavrill. |
+| R107 | Published the rebrand to GitHub. | Application commit 53e9125aecfb8a454e6511e2fce945cb39a942e8 is on rankint360/CourierMail main. |
+| R108 | Verified Render rollout. | Deployment dep-dc4774i9lscs73dvoddg reached live. Webmail, administration, manifest, and database health returned HTTP 200 with the new brand. |
+| R109 | Verified Linux deployment checks. | Actions run 45872319241 succeeded, including all tests, both Caddy route modes, Compose validation, and the production container with mounted secrets. |
+| R110 | Verified live administration visually. | The browser showed Zavrill branding, sign-in, and account creation on the existing Render address. The private preview retains its sign-in gate. |

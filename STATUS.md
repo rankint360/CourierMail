@@ -81,3 +81,11 @@ The user selected Zavrill as the platform brand. Updated webmail, administration
 Existing database files, browser storage, sessions, Compose volumes, and DNS verification identifiers retain their established names. This preserves existing state during the rebrand. New shell caches use Zavrill naming and retire old shell caches on service-worker activation. Existing custom organization branding is preserved.
 
 All 21 tests passed, the production build succeeded, JavaScript syntax checks passed, and git diff checks passed. Preview and GitHub publication verification are recorded below when complete. The selected domain has not been registered or connected by this work.
+
+Zavrill preview publication succeeded. The existing owner-private preview URL is https://courier-webmail-jv.stonybrioche1.chatgpt.site. Deployment appgdep_6b08736d0400819188f0ed5cb3d9c3a9 serves source commit 9081b616f037298731e8c49c6c9a6c399930b869. Its display title is Zavrill. The repository and service URL identifiers retain their existing names.
+
+## Zavrill live verification
+
+GitHub application commit 53e9125aecfb8a454e6511e2fce945cb39a942e8 is live on Render deployment dep-dc4774i9lscs73dvoddg. Root webmail and /admin return HTTP 200 with Zavrill titles. The PWA manifest returns name Zavrill. /healthz returns HTTP 200, status ok, and database true. The live administration screen was visually verified in the browser.
+
+Linux Actions run 45872319241 passed all tests, Compose and shell validation, both Caddy route modes, and production-container startup with file-mounted secrets. The owner-private Sites preview also published successfully. Domain registration, DNS connection, final Netcup activation, and live mail-delivery testing remain pending.

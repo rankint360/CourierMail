@@ -4,17 +4,19 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { createStore } from './store.mjs';
 import { createPlatform } from './api.mjs';
+import { loadSecrets } from './secrets.mjs';
 
 const production = process.env.NODE_ENV === 'production';
 const dataDir = resolve(process.env.DATA_DIR || '.data');
 await mkdir(dataDir, { recursive: true });
-let secret = process.env.APP_SECRET;
+const configured = await loadSecrets();
+let secret = configured.APP_SECRET;
 if (!secret && !production) {
   const file = resolve(dataDir, 'app-secret');
   try { secret = await readFile(file, 'utf8'); }
   catch { secret = randomBytes(32).toString('hex'); await writeFile(file, secret, { mode: 0o600 }); }
 }
-const env = { ...process.env, APP_SECRET: secret, ALLOW_REGISTRATION: process.env.ALLOW_REGISTRATION || (production ? 'false' : 'true') };
+const env = { ...configured, APP_SECRET: secret, ALLOW_REGISTRATION: configured.ALLOW_REGISTRATION || (production ? 'false' : 'true') };
 const store = createStore(resolve(dataDir, 'courier.sqlite'));
 const platform = createPlatform(store, env);
 if (!production) await import('../build.mjs');

@@ -4,5 +4,6 @@
 dist
 backups
 infra/.env
+infra/netcup/
 *.zip
 *.tar.gz

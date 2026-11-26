@@ -61,3 +61,11 @@ Update this snapshot and the Record Register when deployment or verification adv
 ## Deployment verification
 
 Service srv-dc3gpkeq1p3s738qlehg runs in Ohio with a 1 GB persistent disk. Application commit eae80374369b4da7e29543e411ddb41f232cf902 is live. The public app, admin page, platform configuration/session routes, manifest, and icon returned HTTP 200. The health endpoint returned status ok with database true after one transient edge 520 response. The live admin sign-in screen was verified in the browser. Render log retrieval recovered after a temporary 503, and the error-log query returned no matching entries. Automatic Blueprint synchronization is disabled, while the service deploys code commits automatically. Documentation-only publication uses the skip-render marker.
+
+## Combined Netcup preparation — 2026-11-26
+
+Added infra/netcup with a single-host Docker Compose stack for Courier, Stalwart, and Caddy. It includes persistent application/mail storage, HTTPS routing, private bootstrap access, file-based secrets, setup and preflight tools, certificate synchronization, and cold backups. docs/NETCUP.md covers host preparation, DNS/PTR, mail TLS renewal, Stalwart setup, restore rehearsal, and preserving existing Render accounts during migration.
+
+Local verification passed all 21 tests, the application build, shell syntax checks for the deployment scripts, and git diff checks. Docker is unavailable on this workstation. Added a Linux GitHub Actions workflow to validate Compose, both Caddy routes, and a built production container with mounted secrets. Its remote result is recorded separately when available.
+
+Netcup deployment has not been applied. The server, final domain, DNS, certificate issuance, external mail delivery, and backup restoration still require live setup. Existing Render resources remain running. Registration defaults to disabled, and the public Stalwart route remains closed until initialization is complete.

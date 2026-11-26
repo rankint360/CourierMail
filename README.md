@@ -12,6 +12,8 @@ Open http://127.0.0.1:4173 for webmail and http://127.0.0.1:4173/admin for busin
 
 ## Business email hosting
 
+For Courier and Stalwart on one Netcup VPS, use the [combined Netcup deployment guide](docs/NETCUP.md). It includes Caddy HTTPS, private mail initialization, persistent volumes, file secrets, mail TLS renewal, backups, and Render migration steps.
+
 The Render Blueprint deploys the business application with a persistent disk. The `infra/compose.yaml` stack prepares Stalwart on a mail-capable Linux host. Render handles the application over HTTP, while Stalwart handles SMTP, IMAP, JMAP, storage, spam filtering, and delivery queues.
 
 Business Admin includes account registration and sign-in, tenant ownership, owner/admin/member roles, one-time invitations, custom branding, unique domain registration, DNS ownership checks, domain activation, mailbox provisioning, aliases, quotas, suspension, audit history, password changes, and encrypted mailbox sessions.

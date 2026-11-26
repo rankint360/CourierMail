@@ -8,3 +8,7 @@ infra/.env
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
+infra/netcup/secrets/
+infra/netcup/tls/
+infra/netcup/caddy-data/
+infra/netcup/.maintenance.lock

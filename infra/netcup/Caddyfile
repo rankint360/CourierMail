@@ -1,0 +1,20 @@
+{
+    email {$ACME_EMAIL}
+    acme_ca https://acme-v02.api.letsencrypt.org/directory
+}
+
+(mail_offline) {
+    respond "Mail setup in progress" 503
+}
+(mail_ready) {
+    reverse_proxy mail:8080
+}
+
+{$APP_HOSTNAME} {
+    encode zstd gzip
+    reverse_proxy app:10000
+}
+
+{$MAIL_HOSTNAME} {
+    import {$MAIL_ROUTE:mail_offline}
+}

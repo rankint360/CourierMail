@@ -1,0 +1,72 @@
+services:
+  app:
+    build:
+      context: ../..
+    init: true
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 10000
+      DATA_DIR: /var/data/courier
+      APP_ORIGIN: https://${APP_HOSTNAME:?Set APP_HOSTNAME}
+      APP_SECRET_FILE: /run/secrets/app_secret
+      MAIL_SERVER_URL: https://${MAIL_HOSTNAME:?Set MAIL_HOSTNAME}
+      MAIL_HOSTNAME: ${MAIL_HOSTNAME}
+      MAIL_ADMIN_TOKEN_FILE: /run/secrets/mail_admin_token
+      ALLOW_REGISTRATION: ${ALLOW_REGISTRATION:-false}
+      MAX_MAILBOXES_PER_ORG: 25
+    secrets: [app_secret, mail_admin_token]
+    volumes:
+      - app-data:/var/data/courier
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:10000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    logging: &logging
+      driver: json-file
+      options: {max-size: 20m, max-file: '5'}
+  mail:
+    image: stalwartlabs/stalwart:${STALWART_TAG:-v1}
+    init: true
+    restart: unless-stopped
+    ports:
+      - '25:25'
+      - '465:465'
+      - '587:587'
+      - '993:993'
+      - '4190:4190'
+      - '127.0.0.1:8080:8080'
+    volumes:
+      - mail-config:/etc/stalwart
+      - mail-data:/var/lib/stalwart
+      - ./tls:/etc/stalwart/tls:ro
+    logging: *logging
+  proxy:
+    image: caddy:${CADDY_TAG:-2-alpine}
+    restart: unless-stopped
+    ports: ['80:80', '443:443', '443:443/udp']
+    environment:
+      APP_HOSTNAME: ${APP_HOSTNAME}
+      MAIL_HOSTNAME: ${MAIL_HOSTNAME}
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL}
+      MAIL_ROUTE: ${MAIL_ROUTE:-mail_offline}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy-data:/data
+      - caddy-config:/config
+    networks:
+      default:
+        aliases: ['${MAIL_HOSTNAME}']
+    logging: *logging
+secrets:
+  app_secret:
+    file: ./secrets/app_secret
+  mail_admin_token:
+    file: ./secrets/mail_admin_token
+volumes:
+  app-data:
+  mail-config:
+  mail-data:
+  caddy-config:

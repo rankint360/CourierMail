@@ -156,3 +156,16 @@ This register reconstructs the initial implementation from the work recorded in 
 | R088 | Retried runtime error-log review. | Render log retrieval recovered and returned no matching error entries. |
 
 [Live Courier Mail administration](https://courier-mail-sa4z.onrender.com/admin).
+
+## Combined Netcup preparation — 2026-11-26
+
+| Record | Step | Result or evidence |
+| --- | --- | --- |
+| R089 | Prepared combined Netcup topology. | Added Courier, Stalwart, and Caddy Compose services with distinct mail/web port ownership, persistent volumes, and private bootstrap publication. |
+| R090 | Added private runtime secrets. | APP_SECRET_FILE and MAIL_ADMIN_TOKEN_FILE are supported without breaking direct environment configuration. The container copies root-owned secret mounts into a private directory before dropping privileges. |
+| R091 | Added host initialization and checks. | Setup preserves existing keys. Preflight rejects placeholder hosts, invalid route modes, weak encryption keys, and an unconfigured token when mail is opened. |
+| R092 | Prepared mail certificate renewal. | Caddy certificates are validated and copied to Stalwart with a brief mail restart. A maintenance lock prevents collision with cold backups. |
+| R093 | Added combined backup and recovery guidance. | Snapshots include SQLite, distinct Stalwart configuration/data archives, private environment/secrets, and Caddy certificate data. Prior running services restart after backup completion or error. |
+| R094 | Documented Netcup activation and Render migration. | docs/NETCUP.md includes SMTP firewall rules, PTR/DNS, private wizard, DKIM, relay checks, TLS renewal, restore rehearsal, and preservation of APP_SECRET. Render remains running. |
+| R095 | Verified locally. | All 21 tests passed, application build succeeded, three shell scripts passed syntax checks, and git diff checks passed. Docker is absent locally. |
+| R096 | Added Linux deployment verification. | GitHub Actions validates Compose, both Caddy route modes, and the production app container with mounted file secrets. Remote execution remains pending publication. |

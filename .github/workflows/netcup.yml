@@ -1,0 +1,49 @@
+name: Netcup deployment checks
+on:
+  push:
+    branches: [main]
+    paths: ['infra/netcup/**', 'platform/**', 'Dockerfile', 'tests/**', '.github/workflows/netcup.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm test
+      - name: Prepare private fixture
+        run: node infra/netcup/setup.mjs
+      - name: Validate Compose and shell scripts
+        working-directory: infra/netcup
+        run: |
+          docker compose config --quiet
+          sh -n backup.sh
+          sh -n sync-tls.sh
+          sh -n ../../platform/entrypoint.sh
+      - name: Validate both Caddy routes
+        working-directory: infra/netcup
+        run: |
+          docker compose run --rm --no-deps proxy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+          docker compose run --rm --no-deps -e MAIL_ROUTE=mail_ready proxy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+      - name: Build and run production container with private mounted secrets
+        working-directory: infra/netcup
+        run: |
+          docker compose up -d --build app
+          for attempt in $(seq 1 30); do
+            if docker compose exec -T app node -e "fetch('http://127.0.0.1:10000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"; then exit 0; fi
+            sleep 2
+          done
+          exit 1
+      - name: Container logs on failure
+        if: failure()
+        working-directory: infra/netcup
+        run: docker compose logs app proxy
+      - name: Remove isolated CI resources
+        if: always()
+        working-directory: infra/netcup
+        run: docker compose down --volumes --remove-orphans

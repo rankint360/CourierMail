@@ -231,3 +231,7 @@ This register reconstructs the initial implementation from the work recorded in 
 | R131 | Kept read and selection state consistent. | Opening mail refreshes counts and unread results while preserving the reader. Filter changes clear selection; refreshed results drop hidden selected IDs. Keyboard focus stays on the chosen filter. |
 | R132 | Verified behavior in the browser. | Checked unread filtering, combined search, read/unread changes, bulk mark-read, returning to All, and the mobile caught-up state at 390 px. |
 | R133 | Ran regression tests. | All 22 tests passed, including live JMAP unread query composition, totals, pagination, and unchanged All queries. |
+
+| R134 | Published the improved Site. | Version 6 deployment appgdep_6b0920d30e8c81918db0b79bcaa08ada succeeded from Sites source e11b496afb55f80ee3de501eef7cab6c4b24115d. |
+| R135 | Published and verified the application rollout. | GitHub commit bc048acf916bc8b9e40eb8f4d95630a9c4bad69b is live in Render deployment dep-dc4i1dg473hc739k6c90. Linux Actions run 45951011888 succeeded. Assets and database health returned HTTP 200. |
+| R136 | Verified the published inbox behavior. | Browser confirmed the live demo unread filter and selected toggle state. Provider query behavior is covered by mocked JMAP tests; an external mailbox was not connected for this review. |

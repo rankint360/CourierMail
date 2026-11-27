@@ -65,3 +65,8 @@ The test suite covers webmail regression cases, tenant boundaries, sessions, DNS
 The existing private Site previews the webmail and serves the business portal's deployment guidance. Persistent business APIs require the Render/Node deployment. The Render business application is live at https://courier-mail-sa4z.onrender.com, with administration at /admin. The final domain, mail host, and mail-server credentials are still pending.
 
 See [STATUS.md](STATUS.md) for the current readiness snapshot and [RECORD_REGISTER.md](RECORD_REGISTER.md) for the work history.
+
+
+## Unread triage
+
+Use All / Unread above the message list to focus on unread messages in the current folder or search. This works in demo and connected mailboxes. Opening an unread message marks it read and removes it from the filtered list while keeping the reader open. Switching back to All includes read messages again. Bulk selections are cleared when changing the filter and pruned when messages leave the visible list. The filter starts on All when the app opens.

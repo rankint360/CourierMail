@@ -220,3 +220,14 @@ This register reconstructs the initial implementation from the work recorded in 
 | R126 | Verified regression and publication. | All 21 tests and build passed. GitHub commit 04eeb146c82a601da5f5dfc42f7bc85d5042123c reached live on Render deployment dep-dc47ostbedkc73d9ir80. Linux Actions run 45877439183 succeeded. |
 | R127 | Published the private preview. | Sites deployment appgdep_6b087c869e488191819ff45ca54c043c succeeded from source 408264a6e14073221f144740fc7644f1ed9fcbad. |
 | R128 | Checked live branding and icons. | Webmail, administration, new favicon formats, and health returned HTTP 200. Browser inspection confirmed fully loaded wordmarks and mobile sign-in branding at 390 px. |
+
+
+## Everyday inbox review and improvement — 2026-11-26
+
+| Record | Step | Result or evidence |
+| --- | --- | --- |
+| R129 | Reviewed the latest Site version. | Version 5 uses source 408264a6e14073221f144740fc7644f1ed9fcbad. Inbox supports core mail actions but lacks an unread-only triage control. |
+| R130 | Implemented All / Unread filtering. | Added accessible toggle buttons matching the existing design. Demo and connected queries combine unread state with folder, search, starred filtering, and live pagination. |
+| R131 | Kept read and selection state consistent. | Opening mail refreshes counts and unread results while preserving the reader. Filter changes clear selection; refreshed results drop hidden selected IDs. Keyboard focus stays on the chosen filter. |
+| R132 | Verified behavior in the browser. | Checked unread filtering, combined search, read/unread changes, bulk mark-read, returning to All, and the mobile caught-up state at 390 px. |
+| R133 | Ran regression tests. | All 22 tests passed, including live JMAP unread query composition, totals, pagination, and unchanged All queries. |

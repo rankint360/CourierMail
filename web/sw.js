@@ -1,4 +1,4 @@
-const CACHE = 'zavrill-shell-v5';
+const CACHE = 'zavrill-shell-v6';
 const SHELL = ['/brand/wordmark.svg', '/brand/wordmark-inverse.svg', '/favicon.ico', '/favicon-32.png', '/apple-touch-icon.png', '/design-tokens.css', '/brand/mark.svg', '/', '/style.css', '/app.js', '/admin', '/admin.css', '/admin.js', '/manifest.webmanifest', '/icon.svg', '/icon-192.png', '/icon-512.png'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL))));
 self.addEventListener('activate', event => event.waitUntil(Promise.all([caches.keys().then(keys => Promise.all(keys.filter(key => (key.startsWith('courier-shell-') || key.startsWith('zavrill-shell-')) && key !== CACHE).map(key => caches.delete(key)))), self.clients.claim()])));

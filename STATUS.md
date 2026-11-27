@@ -115,3 +115,12 @@ Browser inspection confirmed the wordmarks and favicon declarations. Added HTTP 
 
 
 Platform branding is live from GitHub commit 04eeb146c82a601da5f5dfc42f7bc85d5042123c on Render deployment dep-dc47ostbedkc73d9ir80. Root and administration pages, ICO/PNG/Apple icons, and database health returned HTTP 200. Browser inspection confirmed the loaded SVG webmail wordmark and inverse sign-in logo at desktop and 390 px mobile widths. Linux Actions run 45877439183 succeeded. Private Sites deployment appgdep_6b087c869e488191819ff45ca54c043c also succeeded from Sites commit 408264a6e14073221f144740fc7644f1ed9fcbad. All 21 tests and the production build passed.
+
+
+## Everyday inbox improvement — 2026-11-26
+
+Reviewed the latest private Site, version 5, sourced from 408264a6e14073221f144740fc7644f1ed9fcbad. Selected unread triage as the most useful bounded improvement because the inbox already supports search, folders, composing, and bulk actions but lacks an unread-only view.
+
+Added accessible All / Unread toggle buttons in the existing visual language. Filtering combines with folder, search, starred queries, and live pagination. Reading refreshes folder counts and removes newly read messages from unread results while retaining the open reader. Bulk selections are cleared on filter changes and pruned to visible results. Added clear unread-empty states and retained keyboard focus on the filter.
+
+All 22 tests passed, including server-side unread query composition and pagination coverage. Browser checks covered filtering, combined search, opening and marking unread, bulk marking read, returning to All, and the 390 px mobile empty state. The selected design, logos, account behavior, and storage identifiers are preserved. Publication verification follows below when complete.

@@ -40,7 +40,7 @@ let db;
 let mailboxDatabase = 'courier-mail-v1';
 let businessContext = null;
 let providerName = 'Fastmail';
-const state = { mode: 'demo', configured: false, folder: 'inbox', search: '', selected: null, checked: new Set(), messages: [], boxes: [], identities: [], total: 0, loading: false, error: '', listVersion: 0, detailVersion: 0, profile: { name: 'Alex Morgan', email: 'alex@northline.studio', signature: 'Alex Morgan\nNorthline Studio' }, demoMessages: [], demoBoxes: [], drafts: {}, composer: null, online: navigator.onLine };
+const state = { mode: 'demo', configured: false, folder: 'inbox', search: '', unreadOnly: false, selected: null, checked: new Set(), messages: [], boxes: [], identities: [], total: 0, loading: false, error: '', listVersion: 0, detailVersion: 0, profile: { name: 'Alex Morgan', email: 'alex@northline.studio', signature: 'Alex Morgan\nNorthline Studio' }, demoMessages: [], demoBoxes: [], drafts: {}, composer: null, online: navigator.onLine };
 async function openDB() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(mailboxDatabase, 1);
@@ -114,7 +114,7 @@ function renderShell() {
   const core = CORE_FOLDERS.map(item => ({ ...item, id: roleId(item.role) })).filter(x => x.id);
   core.splice(1, 0, { id: 'starred', name: 'Starred', role: 'starred' });
   const nav = core.map(item => `<button class="nav-button ${state.folder === item.id ? 'active' : ''}" data-action="folder" data-id="${escapeHTML(item.id)}" ${state.folder === item.id ? 'aria-current="page"' : ''}>${icon(({ sent: 'send', drafts: 'draft', junk: 'spam' })[item.role] || item.role)}<span>${item.name}</span>${countFolder(item.id) ? `<span class="count">${countFolder(item.id)}</span>` : ''}</button>`).join('');
-  $('#app').innerHTML = `<div class="shell"><button class="mobile-overlay" data-action="menu" aria-label="Close navigation"></button><aside class="sidebar"><div class="brand"><img class="brand-logo" src="/brand/wordmark.svg" alt="Zavrill" width="154" height="44"><span class="brand-product">mail</span></div><button class="compose-button" data-action="compose">${icon('plus')}Compose</button><nav class="nav-group" aria-label="Mail folders">${nav}</nav><div><div class="section-label">My folders${button('new-folder', 'plus', 'Create folder')}</div><nav class="nav-group" aria-label="Custom folders">${state.boxes.filter(x => !x.role).map(x => `<button class="nav-button ${state.folder === x.id ? 'active' : ''}" data-action="folder" data-id="${escapeHTML(x.id)}"><span class="folder-dot"></span>${escapeHTML(x.name)}</button>`).join('')}</nav></div><div class="sidebar-bottom"><div class="storage">${state.mode === 'demo' ? 'Your space to make things happen.<br>Demo mailbox · saved on this device' : 'Connected to Fastmail<br>Your mail stays in your account'}</div><button class="nav-button" data-action="settings">${icon('settings')}Settings</button></div></aside><main class="workspace"><header class="topbar">${button('menu', 'menu', 'Open navigation', 'class="mobile-menu"')}<form class="search" id="search-form" role="search">${icon('search')}<input id="search" type="search" placeholder="Search your mail" aria-label="Search mail" value="${escapeHTML(state.search)}"><span class="shortcut">Ctrl K</span></form><div class="top-actions">${button('refresh', 'refresh', 'Refresh mailbox')}<button class="account" data-action="settings" aria-label="Account settings"><span class="account-text"><strong>${escapeHTML(state.profile.name)}</strong>${state.mode === 'demo' ? 'Northline Studio' : 'Fastmail'}</span><span class="avatar">${initials(state.profile.name)}</span></button></div></header><div class="page-title"><div><h1>${escapeHTML(folderLabel())}</h1><div class="subtitle" id="list-subtitle">${state.loading ? 'Loading your messages…' : 'A little clarity for your day.'}</div></div><button class="mode-tag" data-action="settings">${icon(state.mode === 'demo' ? 'folder' : 'check')}${state.mode === 'demo' ? 'Demo mailbox' : 'Fastmail connected'}</button></div><div id="error" class="error-banner ${state.error ? '' : 'hidden'}" role="alert">${escapeHTML(state.error)}</div><div class="mail-layout ${state.selected ? 'has-message' : ''}"><section class="list-panel" aria-label="Messages"><div class="list-toolbar"><input class="check" type="checkbox" id="select-all" aria-label="Select all displayed messages">${button('bulk-read', 'mail', 'Mark selected as read')}${button('bulk-archive', 'archive', 'Archive selected')}${button('bulk-trash', 'trash', 'Move selected to trash')}<span class="spacer"></span><span class="small" id="checked-count"></span></div><div class="message-list" id="message-list"></div><div class="list-footer"><span id="list-count"></span><span>${state.mode === 'demo' ? 'On this device' : 'Synced with Fastmail'}</span></div></section><section class="reading-pane" aria-label="Message reader" id="reader"></section></div></main></div>`;
+  $('#app').innerHTML = `<div class="shell"><button class="mobile-overlay" data-action="menu" aria-label="Close navigation"></button><aside class="sidebar"><div class="brand"><img class="brand-logo" src="/brand/wordmark.svg" alt="Zavrill" width="154" height="44"><span class="brand-product">mail</span></div><button class="compose-button" data-action="compose">${icon('plus')}Compose</button><nav class="nav-group" aria-label="Mail folders">${nav}</nav><div><div class="section-label">My folders${button('new-folder', 'plus', 'Create folder')}</div><nav class="nav-group" aria-label="Custom folders">${state.boxes.filter(x => !x.role).map(x => `<button class="nav-button ${state.folder === x.id ? 'active' : ''}" data-action="folder" data-id="${escapeHTML(x.id)}"><span class="folder-dot"></span>${escapeHTML(x.name)}</button>`).join('')}</nav></div><div class="sidebar-bottom"><div class="storage">${state.mode === 'demo' ? 'Your space to make things happen.<br>Demo mailbox · saved on this device' : 'Connected to Fastmail<br>Your mail stays in your account'}</div><button class="nav-button" data-action="settings">${icon('settings')}Settings</button></div></aside><main class="workspace"><header class="topbar">${button('menu', 'menu', 'Open navigation', 'class="mobile-menu"')}<form class="search" id="search-form" role="search">${icon('search')}<input id="search" type="search" placeholder="Search your mail" aria-label="Search mail" value="${escapeHTML(state.search)}"><span class="shortcut">Ctrl K</span></form><div class="top-actions">${button('refresh', 'refresh', 'Refresh mailbox')}<button class="account" data-action="settings" aria-label="Account settings"><span class="account-text"><strong>${escapeHTML(state.profile.name)}</strong>${state.mode === 'demo' ? 'Northline Studio' : 'Fastmail'}</span><span class="avatar">${initials(state.profile.name)}</span></button></div></header><div class="page-title"><div><h1>${escapeHTML(folderLabel())}</h1><div class="subtitle" id="list-subtitle">${state.loading ? 'Loading your messages…' : 'A little clarity for your day.'}</div></div><button class="mode-tag" data-action="settings">${icon(state.mode === 'demo' ? 'folder' : 'check')}${state.mode === 'demo' ? 'Demo mailbox' : 'Fastmail connected'}</button></div><div id="error" class="error-banner ${state.error ? '' : 'hidden'}" role="alert">${escapeHTML(state.error)}</div><div class="mail-layout ${state.selected ? 'has-message' : ''}"><section class="list-panel" aria-label="Messages"><div class="mail-filter-bar" role="group" aria-label="Filter messages"><button class="mail-filter ${!state.unreadOnly ? 'active' : ''}" data-action="filter-mail" data-filter="all" aria-pressed="${!state.unreadOnly}">All</button><button class="mail-filter ${state.unreadOnly ? 'active' : ''}" data-action="filter-mail" data-filter="unread" aria-pressed="${state.unreadOnly}">Unread</button></div><div class="list-toolbar"><input class="check" type="checkbox" id="select-all" aria-label="Select all displayed messages">${button('bulk-read', 'mail', 'Mark selected as read')}${button('bulk-archive', 'archive', 'Archive selected')}${button('bulk-trash', 'trash', 'Move selected to trash')}<span class="spacer"></span><span class="small" id="checked-count"></span></div><div class="message-list" id="message-list"></div><div class="list-footer"><span id="list-count"></span><span>${state.mode === 'demo' ? 'On this device' : 'Synced with Fastmail'}</span></div></section><section class="reading-pane" aria-label="Message reader" id="reader"></section></div></main></div>`;
   // The mobile menu shares the standard icon button component.
   $('.topbar > .icon-button').classList.add('mobile-menu');
   const adminLink = document.createElement('a');
@@ -138,12 +138,13 @@ function renderShell() {
   renderList(); renderReader();
 }
 function renderList() {
-  $('#message-list').innerHTML = state.loading && !state.messages.length ? '<div class="empty">Loading your mail…</div>' : !state.messages.length ? `<div class="empty">${icon(state.search ? 'search' : 'inbox')}<h2>${state.search ? 'No matching messages' : 'All clear here'}</h2><p>${state.search ? 'Try another sender, subject, or phrase.' : 'Messages in this folder will appear here.'}</p></div>` : state.messages.map(m => {
+  $('#message-list').innerHTML = state.loading && !state.messages.length ? '<div class="empty">Loading your mail…</div>' : !state.messages.length ? `<div class="empty">${icon(state.search ? 'search' : 'inbox')}<h2>${state.unreadOnly ? 'No unread messages' : state.search ? 'No matching messages' : 'All clear here'}</h2><p>${state.unreadOnly ? (state.search ? 'No unread messages match this search. Try All to include read messages.' : 'You’re caught up in this folder. Choose All to see read messages.') : state.search ? 'Try another sender, subject, or phrase.' : 'Messages in this folder will appear here.'}</p></div>` : state.messages.map(m => {
     const p = sender(m); const name = displayName(p);
     return `<article class="message-row ${m.id === state.selected?.id ? 'selected' : ''} ${!m.keywords.$seen ? 'unread' : ''}" data-id="${escapeHTML(m.id)}" tabindex="0" role="button" aria-label="${escapeHTML(`${name}, ${m.subject || 'No subject'}${!m.keywords.$seen ? ', unread' : ''}`)}"><div class="row-check"><input class="check message-check" type="checkbox" aria-label="Select message" data-id="${escapeHTML(m.id)}" ${state.checked.has(m.id) ? 'checked' : ''}></div><span class="avatar">${escapeHTML(initials(name))}</span><div><div class="message-meta"><span class="sender">${!m.keywords.$seen ? '<span class="unread-dot"></span>' : ''}${escapeHTML(name)}</span><span class="row-time">${dateShort(m.receivedAt)}</span></div><div class="subject">${escapeHTML(m.subject || '(No subject)')}</div><div class="preview">${escapeHTML(m.preview || m.text?.slice(0, 100) || '')}</div><div class="row-bottom"><span class="small">${m.hasAttachment || m.attachments?.length ? icon('clip') : ''}${m.keywords.$draft ? ' Draft' : ''}</span><button class="star ${m.keywords.$flagged ? 'on' : ''}" data-action="star" data-id="${escapeHTML(m.id)}" aria-label="${m.keywords.$flagged ? 'Unstar' : 'Star'} message">${icon('star')}</button></div></div></article>`;
   }).join('') + (state.messages.length < state.total ? '<button class="load-button" data-action="load-more">Load more messages</button>' : '');
   $('#list-count').textContent = `${state.messages.length ? '1–' + state.messages.length : '0'} of ${state.total} messages`;
   $('#list-subtitle').textContent = state.search ? `Results for “${state.search}”` : `${state.total} message${state.total === 1 ? '' : 's'} · A little clarity for your day.`;
+  if (state.unreadOnly) $('#list-subtitle').textContent = `${state.total} unread message${state.total === 1 ? '' : 's'}${state.search ? ` matching “${state.search}”` : ''}`;
   $('#checked-count').textContent = state.checked.size ? `${state.checked.size} selected` : '';
   $('#select-all').checked = state.messages.length > 0 && state.messages.every(m => state.checked.has(m.id));
   $('#select-all').indeterminate = state.checked.size > 0 && !$('#select-all').checked;
@@ -164,22 +165,26 @@ async function loadMailbox({ more = false, selectFirst = false } = {}) {
     let messages, total;
     if (state.mode === 'demo') {
       messages = state.demoMessages.filter(m => state.folder === 'starred' ? m.keywords.$flagged && !m.mailboxIds.trash && !m.mailboxIds.junk : m.mailboxIds[state.folder]);
+      if (state.unreadOnly) messages = messages.filter(m => !m.keywords.$seen);
       if (state.search) { const q = state.search.toLowerCase(); messages = messages.filter(m => [m.subject, m.text, ...(m.from || []).map(displayName), ...(m.to || []).map(displayName)].join(' ').toLowerCase().includes(q)); }
       messages = messages.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt)); total = messages.length;
     } else {
       const params = new URLSearchParams({ q: state.search, position: String(more ? state.messages.length : 0) });
+      if (state.unreadOnly) params.set('unread', 'true');
       if (state.folder === 'starred') params.set('starred', 'true'); else params.set('mailbox', state.folder);
       const result = await request(`messages?${params}`); messages = result.messages; total = result.total;
     }
     if (version !== state.listVersion) return;
     state.messages = more ? [...state.messages, ...messages] : messages;
     state.total = total;
+    const visibleIds = new Set(state.messages.map(m => m.id));
+    state.checked = new Set([...state.checked].filter(id => visibleIds.has(id)));
     state.loading = false;
     renderList();
     if (selectFirst && state.messages.length) await openMessage(state.messages[0].id);
   } catch (error) {
     if (version !== state.listVersion) return;
-    state.error = error.message; $('#error').textContent = error.message; $('#error').classList.remove('hidden');
+    state.error = error.message; state.loading = false; renderList(); $('#error').textContent = error.message; $('#error').classList.remove('hidden');
   } finally { if (version === state.listVersion) state.loading = false; }
 }
 async function openMessage(id) {
@@ -190,8 +195,14 @@ async function openMessage(id) {
   const result = state.mode === 'demo' ? structuredClone(message) : await request(`message?id=${encodeURIComponent(id)}`);
   if (version !== state.detailVersion) return;
   state.selected = result;
-  if (!result.keywords.$seen) await changeMessages([id], { read: true }, false);
-  renderList(); renderReader();
+  if (!result.keywords.$seen) {
+    await changeMessages([id], { read: true }, false);
+    await refreshCounts();
+    if (version !== state.detailVersion) return;
+    if (state.unreadOnly) await loadMailbox();
+  }
+  if (version !== state.detailVersion) return;
+  renderShell();
 }
 async function changeMessages(ids, change, reload = true) {
   if (!ids.length) { toast('Select a message first.'); return; }
@@ -376,6 +387,14 @@ async function handleAction(action, target) {
   switch (action) {
     case 'menu': $('.shell').classList.toggle('menu-open'); break;
     case 'compose': await compose(); break;
+    case 'filter-mail': {
+      const unreadOnly = target.dataset.filter === 'unread';
+      if (unreadOnly === state.unreadOnly) break;
+      state.unreadOnly = unreadOnly; state.selected = null; state.checked.clear(); ++state.detailVersion;
+      state.messages = []; state.total = 0; state.loading = true; renderShell();
+      document.querySelector(`[data-action="filter-mail"][data-filter="${unreadOnly ? 'unread' : 'all'}"]`)?.focus();
+      await loadMailbox(); break;
+    }
     case 'folder': await navigate(target.dataset.id); break;
     case 'star': { const m = state.messages.find(x => x.id === target.dataset.id) || state.selected; await changeMessages([m.id], { starred: !m.keywords.$flagged }); break; }
     case 'refresh': await refreshCounts(); await loadMailbox(); renderShell(); toast('Mailbox refreshed.'); break;

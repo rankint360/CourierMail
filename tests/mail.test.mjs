@@ -87,3 +87,25 @@ test('provider credentials cannot follow a redirect to another host', async () =
   const response = await worker.fetch(new Request(root + '/api/mailboxes'), env);
   assert.equal(response.status, 502);
 });
+
+
+test('unread queries combine with folder, search, and starred filters before pagination', async () => {
+  const queries = [];
+  mock((method, args) => {
+    if (method === 'Email/query') { queries.push(args); return { ids: ['unread-mail'], total: 73 }; }
+    if (method === 'Email/get') { assert.deepEqual(args.ids, ['unread-mail']); return { list: [{ id: 'unread-mail', keywords: {} }] }; }
+    throw new Error(`Unexpected method ${method}`);
+  });
+  const folder = await worker.fetch(new Request(root + '/api/messages?mailbox=inbox&unread=true&q=proposal&position=50'), env);
+  assert.equal(folder.status, 200);
+  assert.deepEqual(queries[0].filter, { inMailbox: 'inbox', notKeyword: '$seen', text: 'proposal' });
+  assert.equal(queries[0].position, 50);
+  assert.equal(queries[0].calculateTotal, true);
+  const body = await folder.json();
+  assert.equal(body.total, 73);
+  assert.equal(body.messages[0].id, 'unread-mail');
+  await worker.fetch(new Request(root + '/api/messages?starred=true&unread=true'), env);
+  assert.deepEqual(queries[1].filter, { notKeyword: '$seen', hasKeyword: '$flagged' });
+  await worker.fetch(new Request(root + '/api/messages?mailbox=inbox'), env);
+  assert.deepEqual(queries[2].filter, { inMailbox: 'inbox' });
+});

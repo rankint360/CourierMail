@@ -73,6 +73,7 @@ async function api(request, env, url) {
   if (url.pathname === '/api/messages' && request.method === 'GET') {
     const filter = {};
     if (url.searchParams.get('mailbox')) filter.inMailbox = url.searchParams.get('mailbox');
+    if (url.searchParams.get('unread') === 'true') filter.notKeyword = '$seen';
     if (url.searchParams.get('starred') === 'true') filter.hasKeyword = '$flagged';
     if (url.searchParams.get('q')) filter.text = url.searchParams.get('q').slice(0, 500);
     const position = Math.max(0, Number(url.searchParams.get('position')) || 0);
